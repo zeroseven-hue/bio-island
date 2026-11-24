@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>國中七年級生物 3D 探索群島 派發與總覽大廳</title>
-  <link rel="stylesheet" href="assets/css/hub.css?v=3.0">
+  <title>國中生物 3D 探索群島 派發與總覽大廳</title>
+  <link rel="stylesheet" href="assets/css/hub.css?v=3.5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -12,12 +12,12 @@
   <script src="assets/js/qrcode.min.js"></script>
 
 <style id="pinGatekeeperStyle">
-/* 🔒 教師安全防護 PIN 密碼鎖樣式 (與正課 100% 一致) */
+/* 🔒 教師安全防護 PIN 密碼鎖樣式 */
 .pin-modal-overlay {
   position: fixed !important;
   top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
-  background: rgba(15, 23, 42, 0.96) !important;
-  backdrop-filter: blur(16px) !important;
+  background: rgba(22, 54, 45, 0.95) !important;
+  backdrop-filter: blur(14px) !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
@@ -27,14 +27,14 @@
   display: none !important;
 }
 .pin-modal-card {
-  background: #1e293b !important;
-  border: 2px solid #0d9488 !important;
+  background: #1b3830 !important;
+  border: 2px solid #527a6c !important;
   border-radius: 24px !important;
   padding: 36px 28px !important;
   text-align: center !important;
   max-width: 420px !important;
   width: 90% !important;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6) !important;
   animation: pinPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif !important;
 }
@@ -42,52 +42,32 @@
   from { opacity: 0; transform: scale(0.92); }
   to { opacity: 1; transform: scale(1); }
 }
-.pin-icon {
-  font-size: 3.2rem !important;
-  margin-bottom: 12px !important;
-  line-height: 1 !important;
-}
-.pin-modal-card h2 {
-  font-size: 1.45rem !important;
-  color: #f8fafc !important;
-  margin: 0 0 10px 0 !important;
-  font-weight: 800 !important;
-}
-.pin-modal-card p {
-  color: #94a3b8 !important;
-  font-size: 0.92rem !important;
-  margin-bottom: 20px !important;
-  line-height: 1.5 !important;
-}
+.pin-icon { font-size: 3.2rem !important; margin-bottom: 12px !important; line-height: 1 !important; }
+.pin-modal-card h2 { font-size: 1.45rem !important; color: #f8fafc !important; margin: 0 0 10px 0 !important; font-weight: 800 !important; }
+.pin-modal-card p { color: #a7c0b5 !important; font-size: 0.92rem !important; margin-bottom: 20px !important; line-height: 1.5 !important; }
 .pin-modal-card input {
   width: 82% !important;
   padding: 12px !important;
   font-size: 1.6rem !important;
   text-align: center !important;
   letter-spacing: 6px !important;
-  background: #0f172a !important;
-  border: 2px solid #334155 !important;
+  background: #0f241e !important;
+  border: 2px solid #33594e !important;
   border-radius: 12px !important;
-  color: #2dd4bf !important;
+  color: #a7f3d0 !important;
   margin-bottom: 12px !important;
   outline: none !important;
   box-sizing: border-box !important;
 }
 .pin-modal-card input:focus {
-  border-color: #0d9488 !important;
-  box-shadow: 0 0 12px rgba(13, 148, 136, 0.4) !important;
+  border-color: #527a6c !important;
+  box-shadow: 0 0 12px rgba(82, 122, 108, 0.5) !important;
 }
-.pin-error-text {
-  color: #f87171 !important;
-  font-size: 0.88rem !important;
-  font-weight: 700 !important;
-  min-height: 22px !important;
-  margin-bottom: 14px !important;
-}
+.pin-error-text { color: #f87171 !important; font-size: 0.88rem !important; font-weight: 700 !important; min-height: 22px !important; margin-bottom: 14px !important; }
 .btn-pin-submit {
   width: 100% !important;
   padding: 13px !important;
-  background: linear-gradient(135deg, #0d9488, #0f766e) !important;
+  background: linear-gradient(135deg, #224a3e, #336152) !important;
   color: white !important;
   border: none !important;
   border-radius: 12px !important;
@@ -95,31 +75,25 @@
   font-size: 1.05rem !important;
   cursor: pointer !important;
   transition: opacity 0.2s, transform 0.1s !important;
-  box-sizing: border-box !important;
 }
-.btn-pin-submit:hover {
-  opacity: 0.95 !important;
-  transform: translateY(-1px) !important;
-}
+.btn-pin-submit:hover { opacity: 0.95 !important; transform: translateY(-1px) !important; }
 
 /* 巨幅全螢幕白板投影 Modal */
 .modal-overlay-fullscreen {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(15, 23, 42, 0.94);
+  background: rgba(18, 38, 32, 0.95);
   backdrop-filter: blur(12px);
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 999999;
 }
-.modal-overlay-fullscreen.active {
-  display: flex;
-}
+.modal-overlay-fullscreen.active { display: flex; }
 .fullscreen-qr-card {
   background: #ffffff;
   padding: 40px;
-  border-radius: 28px;
+  border-radius: 26px;
   text-align: center;
   box-shadow: 0 25px 60px rgba(0,0,0,0.5);
   max-width: 600px;
@@ -128,44 +102,38 @@
 }
 .fullscreen-close-btn {
   position: absolute;
-  top: 16px;
-  right: 20px;
-  font-size: 2rem;
-  background: none;
-  border: none;
-  color: #64748b;
-  cursor: pointer;
+  top: 16px; right: 20px; font-size: 2rem; background: none; border: none; color: #5c7269; cursor: pointer;
 }
 </style>
 </head>
 <body>
 
-  <!-- 頂部導覽列 (100% 對齊正課 hub.css 秩序) -->
+  <!-- 頂部導覽列 (100% 對齊正課版型) -->
   <header class="navbar">
     <a href="index.html" class="navbar-brand">
-      <span>🌴 國中七年級生物 3D 探索群島平台</span>
+      <span>🌿 國中生物 3D 探索群島平台</span>
       <span class="navbar-badge">7年級自然領域</span>
     </a>
     <div class="nav-actions">
-      <button type="button" class="btn-nav" style="background: #0d9488; border-color: #14b8a6; color: #ffffff; cursor:pointer;" onclick="openTeacherPinGate()">
+      <button type="button" class="btn-nav" style="background: #2a584a; border-color: #527a6c; color: #ffffff; cursor:pointer;" onclick="openTeacherPinGate()">
         📊 教師即時繳交儀表板
       </button>
-      <span style="font-size: 0.9rem; color: #cbd5e1;">智慧白板派卷系統</span>
+      <span style="font-size: 0.9rem; color: #b8ccbe;">智慧白板派卷系統</span>
     </div>
   </header>
 
   <div class="container">
     
-    <!-- Hero Banner (與右圖一致的藍紫色圓角高雅橫幅) -->
-    <div class="hero-banner" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #0d9488 100%);">
-      <h1>【國中生物】3D 探索群島互動平台</h1>
+    <!-- Hero Banner (與第三張圖一致的深墨綠山海漸層) -->
+    <div class="hero-banner">
+      <h1>【國中生物】3D 探索群島 互動學習平台</h1>
       <p>
-        生物課堂數位化：結合 WebGL 3D 擬真生態島嶼、跨島渡輪視角、顯微鏡對焦與寒假 10 點集點核查！<br>
-        教師可在白板一鍵投影派卷 QR Code，全班 iPad / 手機直接掃碼探索；亦可切換至【即時儀表板】監看全班 35 人集點進度。
+        生物課堂數位化：結合 WebGL 3D 擬真生態島嶼、跨島渡輪視角、動植物微觀探究與寒假 10 點集點核查！<br>
+        教師可在白板一鍵投影派卷 QR Code，全班 iPad / 手機直接掃碼作答；亦可切換至【即時儀表板】即時監看 35 人集點進度。
       </p>
     </div>
 
-    <!-- 👨‍🏫 教師一鍵課堂派發與 QR Code 投影面板 (100% 對齊右圖版型) -->
+    <!-- 👨‍🏫 教師一鍵課堂派發與 QR Code 投影面板 (第一張圖頂部樣式) -->
     <section class="dispatch-card">
       <div class="dispatch-header">
         <div class="dispatch-title">
@@ -173,17 +141,17 @@
         </div>
         <span class="dispatch-badge">智慧教室 & 電子白板專用</span>
       </div>
-      <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0.8rem;">
+      <p style="color: #4b6257; font-size: 0.95rem; margin-bottom: 0.8rem;">
         請選擇本節課要派發的生物島嶼，點擊「投影大螢幕 QR Code」即可全螢幕放大展示，供全班學生持平板快速掃描！
       </p>
 
       <div class="dispatch-controls">
         <select id="selectDispatchSheet" class="form-control" style="font-weight: 700; font-size: 1.05rem;" onchange="handleSelectChange()">
-          <option value="overview" data-title="【群島全覽】生物 3D 探索群島 ✕ 宏觀海圖與渡輪導覽 (全島全景)" selected>【群島全覽】生物 3D 探索群島 ✕ 宏觀海圖與渡輪導覽 (全景自主探索)</option>
-          <option value="island1" data-title="【島嶼 01】生命特性島 ✕ 顯微鏡對焦與細胞結構 (完成獲得 2 點)">【島嶼 01】生命特性島 ✕ 顯微鏡對焦與細胞結構 (完成獲得 2 點)</option>
+          <option value="overview" data-title="【群島全覽】生物 3D 探索群島 ✕ 宏觀海圖與渡輪全景導覽" selected>【群島全覽】生物 3D 探索群島 ✕ 宏觀海圖與渡輪全景導覽 (全島自主探索)</option>
+          <option value="island1" data-title="【島嶼 01】生命特性島 ✕ 顯微鏡對焦與細胞結構 (完成獲得 2 點)">【島嶼 01】生命特性島 ✕ 顯微鏡對焦與動植物細胞結構 (完成獲得 2 點)</option>
           <option value="island2" data-title="【島嶼 02】能量營養島 ✕ 光合作用實驗與消化酵素 (完成獲得 2 點)">【島嶼 02】能量營養島 ✕ 光合作用實驗與消化酵素 (完成獲得 2 點)</option>
           <option value="island3" data-title="【島嶼 03】流動循環島 ✕ 水分蒸散與人體血液循環 (完成獲得 2 點)">【島嶼 03】流動循環島 ✕ 水分蒸散與人體血液循環 (完成獲得 2 點)</option>
-          <option value="island4" data-title="【島嶼 04】感知協調島 ✕ 神經反射弧與內分泌激素 (完成獲得 2 點)">【島嶼 04】感知協調島 ✕ 神經反射弧與內分泌激素 (完成獲得 2 點)</option>
+          <option value="island4" data-title="【島嶼 04】感知協調島 ✕ 神經反射弧與內分泌激素 (完成獲得 2 點)">【島嶼 04】感知協調島 ✕ 神經反射弧與六大腺體激素 (完成獲得 2 點)</option>
           <option value="island5" data-title="【島嶼 05】恆定維持島 ✕ 體溫呼吸胸腔與泌尿排泄 (完成獲得 2 點)">【島嶼 05】恆定維持島 ✕ 體溫呼吸胸腔與泌尿排泄 (完成獲得 2 點)</option>
         </select>
 
@@ -198,7 +166,7 @@
 
       <!-- 快捷班級鎖定與防前人暫存 -->
       <div style="display:flex; gap:14px; align-items:center; margin-top:14px; flex-wrap:wrap;">
-        <span style="font-size:0.92rem; font-weight:700; color:#334155;">班級鎖定：</span>
+        <span style="font-size:0.92rem; font-weight:700; color:#19382f;">班級鎖定：</span>
         <select id="selectClassOption" class="form-control" style="width:auto; font-weight:700; padding:4px 10px;" onchange="handleSelectChange()">
           <option value="">全體學生（不限班級）</option>
           <option value="701">701 班</option>
@@ -212,31 +180,31 @@
           <option value="709">709 班</option>
           <option value="710">710 班</option>
         </select>
-        <label style="display:inline-flex; align-items:center; gap:6px; font-size:0.9rem; font-weight:700; color:#0f766e; cursor:pointer;">
+        <label style="display:inline-flex; align-items:center; gap:6px; font-size:0.9rem; font-weight:700; color:#224a3e; cursor:pointer;">
           <input type="checkbox" id="chkFreshReset" checked onchange="handleSelectChange()">
-          🔄 平板車換班防呆（新同學掃碼強制清空前人暫存）
+          🔄 平板車換班防呆（新同學掃碼強制清空上一位暫存）
         </label>
       </div>
 
-      <!-- QR Code 預覽與連結區塊 (與右圖 100% 一致) -->
+      <!-- QR Code 預覽與連結區塊 -->
       <div class="dispatch-preview-row" style="margin-top:20px; display:flex; gap:24px; align-items:center; flex-wrap:wrap;">
-        <div style="background:#ffffff; padding:12px; border-radius:16px; border:1px solid #cbd5e1; box-shadow:0 4px 12px rgba(0,0,0,0.06); text-align:center;">
+        <div style="background:#ffffff; padding:12px; border-radius:14px; border:1.5px solid #d1ddd4; text-align:center;">
           <div id="qrcodePreview"></div>
-          <div style="font-size:0.8rem; color:#64748b; margin-top:6px; font-weight:700;">📷 平板相機掃碼直接進入</div>
+          <div style="font-size:0.8rem; color:#5c7269; margin-top:6px; font-weight:700;">📷 平板相機掃碼直接進入</div>
         </div>
 
         <div style="flex:1; min-width:300px;">
-          <h3 id="previewTitle" style="font-size:1.25rem; font-weight:800; color:#1e293b; margin-bottom:8px;">
-            【群島全覽】生物 3D 探索群島 ✕ 宏觀海圖與渡輪導覽
+          <h3 id="previewTitle" style="font-size:1.25rem; font-weight:800; color:#19382f; margin-bottom:8px;">
+            【群島全覽】生物 3D 探索群島 ✕ 宏觀海圖與渡輪全景導覽
           </h3>
-          <p style="font-size:0.88rem; color:#64748b; margin-bottom:10px;">學生派發填答專屬網址：</p>
-          <input type="text" id="targetUrlInput" readonly class="form-control" style="background:#f8fafc; font-family:monospace; font-size:0.9rem; color:#0f766e; margin-bottom:14px;" onclick="this.select()">
+          <p style="font-size:0.88rem; color:#5c7269; margin-bottom:10px;">學生派發填答專屬網址：</p>
+          <input type="text" id="targetUrlInput" readonly class="form-control" style="background:#f0f5f1; font-family:monospace; font-size:0.9rem; color:#16362d; margin-bottom:14px;" onclick="this.select()">
 
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button type="button" class="btn-dispatch" style="background:#6366f1; border-color:#818cf8;" onclick="handleGenerateDispatchQR()">
+            <button type="button" class="btn-dispatch" style="background:#3b7062; border-color:#2a584a;" onclick="handleGenerateDispatchQR()">
               🟣 全螢幕大投影視窗
             </button>
-            <a id="btnDirectOpen" href="https://biology-test-2428f-island.web.app/" target="_blank" class="btn-dispatch" style="background:#10b981; border-color:#34d399; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+            <a id="btnDirectOpen" href="https://biology-test-2428f-island.web.app/" target="_blank" class="btn-dispatch" style="text-decoration:none;">
               🚀 直接開啟群島探索
             </a>
           </div>
@@ -244,9 +212,184 @@
       </div>
     </section>
 
+    <!-- ========================================================
+         下方各島框框 (完全比照第二張圖 .chapter-heading & .sheet-grid)
+         ======================================================== -->
+
+    <!-- 第 1 章至第 2 章：生命的特性與能量 -->
+    <div class="chapter-heading">
+      <span>第 1~2 章：生命的特性、細胞與能量營養</span>
+      <span class="chapter-tag">寒假集點 4 點</span>
+    </div>
+
+    <div class="sheet-grid">
+      <!-- 島一：生命特性島 -->
+      <div class="sheet-card">
+        <div>
+          <span class="sheet-badge" style="background:#dcfce7; color:#166534;">島嶼 01（已上線）</span>
+          <h3 class="sheet-card-title">01 生命特性島 ✕ 顯微鏡精密對焦與細胞結構</h3>
+          <p class="sheet-card-desc">探索生命的起源與現象、顯微鏡精密粗細調節輪對焦挑戰、典型動植物細胞對照（細胞壁、葉綠體、大液泡）與個體組成層次。</p>
+          <div class="sheet-meta-tags">
+            <span class="meta-pill">🔬 顯微鏡調焦</span>
+            <span class="meta-pill">🧬 動植物細胞</span>
+            <span class="meta-pill">🏅 完成得 2 點</span>
+            <span class="meta-pill">🛡️ 平板車防呆門禁</span>
+          </div>
+        </div>
+        <div class="sheet-card-footer">
+          <button type="button" class="btn-card-qr" onclick="showIslandQr('island1', '01 生命特性島')">
+            📱 派卷 QR Code
+          </button>
+          <a href="https://biology-test-2428f-island.web.app/island1/" target="_blank" class="btn-card-enter">
+            登陸探索 ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- 島二：能量營養島 -->
+      <div class="sheet-card">
+        <div>
+          <span class="sheet-badge" style="background:#dcfce7; color:#166534;">島嶼 02（已上線）</span>
+          <h3 class="sheet-card-title">02 能量營養島 ✕ 光合作用探究與消化酵素</h3>
+          <p class="sheet-card-desc">光合作用實驗四部曲（水煮破壞角質、酒精隔水加熱脫色、熱水漂洗、碘液檢驗）、酵素專一性與催化活性、三大營養素人體消化系統動線。</p>
+          <div class="sheet-meta-tags">
+            <span class="meta-pill">🍃 光合作用實驗</span>
+            <span class="meta-pill">🧪 酵素受質催化</span>
+            <span class="meta-pill">🏅 完成得 2 點</span>
+            <span class="meta-pill">🍞 消化吸收動線</span>
+          </div>
+        </div>
+        <div class="sheet-card-footer">
+          <button type="button" class="btn-card-qr" onclick="showIslandQr('island2', '02 能量營養島')">
+            📱 派卷 QR Code
+          </button>
+          <a href="https://biology-test-2428f-island.web.app/island2/" target="_blank" class="btn-card-enter">
+            登陸探索 ➔
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第 3 章至第 4 章：物質循環、協調與恆定 -->
+    <div class="chapter-heading">
+      <span>第 3~4 章：流動循環、感知協調與恆定性</span>
+      <span class="chapter-tag">寒假集點 6 點</span>
+    </div>
+
+    <div class="sheet-grid">
+      <!-- 島三：流動循環島 -->
+      <div class="sheet-card">
+        <div>
+          <span class="sheet-badge" style="background:#dcfce7; color:#166534;">島嶼 03（已上線）</span>
+          <h3 class="sheet-card-title">03 流動循環島 ✕ 水分蒸散與人體血液循環</h3>
+          <p class="sheet-card-desc">植物木質部水分蒸散牽引與韌皮部養分運輸、人體心臟四腔室厚薄與瓣膜防逆流、體循環與肺循環動線剖析與淋巴循環防禦。</p>
+          <div class="sheet-meta-tags">
+            <span class="meta-pill">🪵 水分蒸散牽引</span>
+            <span class="meta-pill">❤️ 心臟瓣膜雙循環</span>
+            <span class="meta-pill">🏅 完成得 2 點</span>
+            <span class="meta-pill">🩸 靜房心動出室</span>
+          </div>
+        </div>
+        <div class="sheet-card-footer">
+          <button type="button" class="btn-card-qr" onclick="showIslandQr('island3', '03 流動循環島')">
+            📱 派卷 QR Code
+          </button>
+          <a href="https://biology-test-2428f-island.web.app/island3/" target="_blank" class="btn-card-enter">
+            登陸探索 ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- 島四：感知協調島 -->
+      <div class="sheet-card">
+        <div>
+          <span class="sheet-badge" style="background:#dcfce7; color:#166534;">島嶼 04（已上線）</span>
+          <h3 class="sheet-card-title">04 感知協調島 ✕ 神經反射弧與六大腺體平衡</h3>
+          <p class="sheet-card-desc">中樞神經與大腦皮質、意識反應 vs 脊髓反射雙軌模型、接尺反應實驗、六大內分泌腺體激素平衡與植物向性 vs 膨壓運動辨析。</p>
+          <div class="sheet-meta-tags">
+            <span class="meta-pill">⚡ 神經反射弧</span>
+            <span class="meta-pill">📏 接尺反應實驗</span>
+            <span class="meta-pill">🩺 六大內分泌腺</span>
+            <span class="meta-pill">🏅 完成得 2 點</span>
+          </div>
+        </div>
+        <div class="sheet-card-footer">
+          <button type="button" class="btn-card-qr" onclick="showIslandQr('island4', '04 感知協調島')">
+            📱 派卷 QR Code
+          </button>
+          <a href="https://biology-test-2428f-island.web.app/island4/" target="_blank" class="btn-card-enter">
+            登陸探索 ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- 島五：恆定維持島 -->
+      <div class="sheet-card">
+        <div>
+          <span class="sheet-badge" style="background:#dcfce7; color:#166534;">島嶼 05（已上線）</span>
+          <h3 class="sheet-card-title">05 恆定維持島 ✕ 體溫呼吸胸腔與泌尿排泄</h3>
+          <p class="sheet-card-desc">人體體溫調節防線、肋骨橫膈呼吸胸腔動態、血糖與水分調節、含氮廢物由肝臟轉尿素與腎臟泌尿排泄過濾全解析。</p>
+          <div class="sheet-meta-tags">
+            <span class="meta-pill">🌡️ 體溫恆定</span>
+            <span class="meta-pill">🫁 呼吸胸腔連動</span>
+            <span class="meta-pill">🚽 肝轉尿素腎過濾</span>
+            <span class="meta-pill">🏅 完成得 2 點</span>
+          </div>
+        </div>
+        <div class="sheet-card-footer">
+          <button type="button" class="btn-card-qr" onclick="showIslandQr('island5', '05 恆定維持島')">
+            📱 派卷 QR Code
+          </button>
+          <a href="https://biology-test-2428f-island.web.app/island5/" target="_blank" class="btn-card-enter">
+            登陸探索 ➔
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 擴充章節：後續群島探勘中 -->
+    <div class="chapter-heading">
+      <span>第 5~6 章：生殖遺傳與演化生態 (擴充籌備中)</span>
+      <span class="chapter-tag" style="background:#e2e8f0; color:#64748b;">下學期單元</span>
+    </div>
+
+    <div class="sheet-grid">
+      <!-- 島六 (預留) -->
+      <div class="sheet-card upcoming">
+        <div>
+          <span class="sheet-badge" style="background:#e2e8f0; color:#64748b;">島嶼 06（籌備中）</span>
+          <h3 class="sheet-card-title">06 生殖遺傳島 ✕ 細胞減數分裂與孟德爾遺傳</h3>
+          <p class="sheet-card-desc">有性生殖與無性生殖比較、細胞分裂與減數分裂染色體動態、孟德爾遺傳法則與棋盤方格分析。</p>
+          <div class="sheet-meta-tags">
+            <span class="meta-pill">🥚 減數分裂</span>
+            <span class="meta-pill">🎲 棋盤方格法</span>
+          </div>
+        </div>
+        <div class="sheet-card-footer">
+          <button type="button" class="btn-card-qr" disabled style="cursor:not-allowed; opacity:0.6;">🚧 航線探勘中</button>
+        </div>
+      </div>
+
+      <!-- 島七 (預留) -->
+      <div class="sheet-card upcoming">
+        <div>
+          <span class="sheet-badge" style="background:#e2e8f0; color:#64748b;">島嶼 07（籌備中）</span>
+          <h3 class="sheet-card-title">07 演化多樣島 ✕ 地層化石與達爾文天擇說</h3>
+          <p class="sheet-card-desc">地質年代地層化石、達爾文天擇說演化機制、五界生物分類系統與台灣珍貴生物多樣性。</p>
+          <div class="sheet-meta-tags">
+            <span class="meta-pill">🦴 地層化石</span>
+            <span class="meta-pill">🐢 達爾文天擇說</span>
+          </div>
+        </div>
+        <div class="sheet-card-footer">
+          <button type="button" class="btn-card-qr" disabled style="cursor:not-allowed; opacity:0.6;">🚧 航線探勘中</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- 🔒 教師安全防護 PIN 密碼鎖 Modal (預設 8088 遮罩) -->
+  <!-- 🔒 教師安全防護 PIN 密碼鎖 Modal -->
   <div id="pinModalOverlay" class="pin-modal-overlay hidden">
     <div class="pin-modal-card">
       <div class="pin-icon">🔒</div>
@@ -256,7 +399,7 @@
       <div id="pinErrorText" class="pin-error-text"></div>
       <div style="display:flex; gap:10px;">
         <button type="button" class="btn-pin-submit" onclick="handlePinSubmit()">解鎖並前往儀表板</button>
-        <button type="button" class="btn-pin-submit" style="background:#475569;" onclick="closeTeacherPinGate()">取消</button>
+        <button type="button" class="btn-pin-submit" style="background:#33594e;" onclick="closeTeacherPinGate()">取消</button>
       </div>
     </div>
   </div>
@@ -265,15 +408,15 @@
   <div id="fullscreenQrModal" class="modal-overlay-fullscreen" onclick="closeFullscreenQR(event)">
     <div class="fullscreen-qr-card" onclick="event.stopPropagation()">
       <button class="fullscreen-close-btn" onclick="closeFullscreenQR()">×</button>
-      <h2 id="fsTitle" style="font-size:1.6rem; font-weight:800; color:#0f172a; margin-bottom:12px;">📱 請拿起平板掃碼登島</h2>
-      <p id="fsSubtitle" style="font-size:1.05rem; color:#475569; margin-bottom:20px;">【群島全覽】生物 3D 探索群島</p>
+      <h2 id="fsTitle" style="font-size:1.6rem; font-weight:800; color:#19382f; margin-bottom:10px;">📱 請拿起平板掃碼登島</h2>
+      <p id="fsSubtitle" style="font-size:1.05rem; color:#4b6257; margin-bottom:18px;">【群島全覽】生物 3D 探索群島</p>
       
-      <div style="background:#ffffff; padding:20px; border-radius:20px; display:inline-block; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid #cbd5e1;">
+      <div style="background:#ffffff; padding:18px; border-radius:18px; display:inline-block; box-shadow:0 10px 30px rgba(0,0,0,0.08); border:1.5px solid #d1ddd4;">
         <div id="fsQrcodeCanvas"></div>
       </div>
 
-      <div style="margin-top:20px; font-size:1.1rem; font-weight:700; color:#0d9488;">
-        ✨ 學生登入免密碼 ‧ 平板車防呆自帶乾淨重置
+      <div style="margin-top:18px; font-size:1.05rem; font-weight:700; color:#224a3e;">
+        ✨ 學生登入免密碼 ‧ 平板車換班防呆自帶乾淨重置
       </div>
     </div>
   </div>
@@ -281,9 +424,8 @@
   <script>
     const BASE_HOST = 'https://biology-test-2428f-island.web.app';
 
-    function getTargetUrl() {
-      const select = document.getElementById('selectDispatchSheet');
-      const val = select.value;
+    function getTargetUrl(islandKey) {
+      const val = islandKey || document.getElementById('selectDispatchSheet').value;
       let path = '/';
       if (val !== 'overview') {
         path = `/${val}/`;
@@ -309,14 +451,13 @@
       document.getElementById('targetUrlInput').value = url;
       document.getElementById('btnDirectOpen').href = url;
 
-      // 產生預覽 QR Code (170x170)
       const container = document.getElementById('qrcodePreview');
       container.innerHTML = '';
       new QRCode(container, {
         text: url,
         width: 170,
         height: 170,
-        colorDark: "#0f172a",
+        colorDark: "#19382f",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
       });
@@ -326,7 +467,15 @@
       const url = getTargetUrl();
       const select = document.getElementById('selectDispatchSheet');
       const title = select.options[select.selectedIndex].getAttribute('data-title');
-      
+      openFullscreenModal(url, title);
+    }
+
+    function showIslandQr(islandKey, islandTitle) {
+      const url = getTargetUrl(islandKey);
+      openFullscreenModal(url, islandTitle);
+    }
+
+    function openFullscreenModal(url, title) {
       document.getElementById('fsSubtitle').textContent = title;
       const fsContainer = document.getElementById('fsQrcodeCanvas');
       fsContainer.innerHTML = '';
@@ -334,11 +483,10 @@
         text: url,
         width: 320,
         height: 320,
-        colorDark: "#0f172a",
+        colorDark: "#19382f",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
       });
-
       document.getElementById('fullscreenQrModal').classList.add('active');
     }
 
@@ -354,7 +502,7 @@
       navigator.clipboard.writeText(input.value).then(() => {
         const originText = btn.textContent;
         btn.textContent = '✅ 已複製連結！';
-        btn.style.background = '#059669';
+        btn.style.background = '#2a584a';
         btn.style.color = '#ffffff';
         setTimeout(() => {
           btn.textContent = originText;
@@ -386,7 +534,6 @@
 
       if (pin === savedPin) {
         closeTeacherPinGate();
-        // 進入即時繳交儀表板
         window.location.href = 'dashboard.html';
       } else {
         err.textContent = '❌ PIN 碼錯誤，請重新輸入！';
@@ -395,7 +542,6 @@
       }
     }
 
-    // 初始化
     window.addEventListener('DOMContentLoaded', () => {
       handleSelectChange();
     });
