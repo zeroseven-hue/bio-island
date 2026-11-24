@@ -694,18 +694,30 @@
           <span class="dot-island ${b ? 'active' : ''}" title="第${idx+1}島: ${b ? '已通關' : '未完成'}">${idx+1}</span>
         `).join('');
 
-        let pillHtml = `<span class="seat-points-pill pill-gray">未繳交</span>`;
+        // 🌟 資訊層次優化：乾淨俐落，絕不重複
+        let nameHtml = '';
+        let pillHtml = '';
+
         if (isAbsent) {
-          pillHtml = `<span class="seat-points-pill pill-gray">🏖️ 請假</span>`;
-        } else if (isDoneFull) {
-          pillHtml = `<span class="seat-points-pill pill-green">10 點 🏆</span>`;
-        } else if (isDonePart) {
-          pillHtml = `<span class="seat-points-pill pill-yellow">${points} 點</span>`;
+          nameHtml = `<div class="seat-name" style="color:#94a3b8;">🏖️ 請假缺席</div>`;
+          pillHtml = `<span class="seat-points-pill pill-gray">不計入應交</span>`;
+        } else if (data && data.name) {
+          // 有交：顯示學生姓名
+          nameHtml = `<div class="seat-name" title="${data.name}">${data.name}</div>`;
+          if (isDoneFull) {
+            pillHtml = `<span class="seat-points-pill pill-green">10 點滿分 🏆</span>`;
+          } else {
+            pillHtml = `<span class="seat-points-pill pill-yellow">已得 ${points} 點</span>`;
+          }
+        } else {
+          // 沒交：姓名區留空/淡灰破折號，底部膠囊清楚標示「尚未開始」
+          nameHtml = `<div class="seat-name" style="color:#94a3b8; font-weight:400;">— 尚無紀錄 —</div>`;
+          pillHtml = `<span class="seat-points-pill pill-gray">0 點 (未開始)</span>`;
         }
 
         card.innerHTML = `
           <div class="seat-num">${seatStr} 號</div>
-          <div class="seat-name">${data ? data.name : (isAbsent ? '請假' : '未交')}</div>
+          ${nameHtml}
           <div class="island-dots-row">${dotsHtml}</div>
           <div>${pillHtml}</div>
         `;
