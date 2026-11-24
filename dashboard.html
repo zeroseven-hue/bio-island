@@ -3,216 +3,737 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>國中七年級生物 3D 探索群島 寒假集點即時儀表板</title>
-  <link rel="stylesheet" href="assets/css/hub.css?v=3.0">
+  <title>國中七年級生物 3D 探索群島 寒假集點大螢幕即時儀表板</title>
+  <link rel="stylesheet" href="assets/css/hub.css?v=4.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <style>
-    body {
-      background: #0f172a;
-      color: #f8fafc;
-      font-family: 'Noto Sans TC', sans-serif;
-      padding: 16px 20px 40px;
+    :root, [data-theme="emerald"] {
+      --dash-primary: #059669;
+      --dash-accent: #047857;
+      --dash-light: #ecfdf5;
+      --dash-border: #6ee7b7;
+      --dash-card-bg: #ffffff;
+      --dash-header-bg: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+      --dash-progress-fill: linear-gradient(90deg, #10b981, #059669);
+      --dash-text-dark: #064e3b;
+      --body-bg: #f0fdf4;
+      --text-main: #064e3b;
+      --card-bg-sub: #ffffff;
     }
-    .dash-header {
-      background: linear-gradient(135deg, #064e3b 0%, #0f766e 100%);
-      padding: 20px 24px;
+
+    [data-theme="ocean"] {
+      --dash-primary: #0284c7;
+      --dash-accent: #0369a1;
+      --dash-light: #f0f9ff;
+      --dash-border: #7dd3fc;
+      --dash-card-bg: #ffffff;
+      --dash-header-bg: linear-gradient(135deg, #070d19 0%, #0f1c32 50%, #0284c7 100%);
+      --dash-progress-fill: linear-gradient(90deg, #38bdf8, #0284c7);
+      --dash-text-dark: #0f172a;
+      --body-bg: #f0f9ff;
+      --text-main: #0f172a;
+    }
+
+    body.dark-mode {
+      --body-bg: #0b1120 !important;
+      --dash-card-bg: #1e293b !important;
+      --dash-border: #334155 !important;
+      --dash-text-dark: #f8fafc !important;
+      --text-main: #f8fafc !important;
+      background-color: #0b1120 !important;
+      color: #f8fafc !important;
+    }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: var(--body-bg);
+      color: var(--text-main);
+      padding: 16px 20px 50px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .top-toolbar {
+      background: var(--dash-header-bg);
+      color: #ffffff;
+      padding: 18px 24px;
       border-radius: 18px;
-      margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      gap: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
     }
-    .dash-title-group h1 {
-      font-size: 1.65rem;
+
+    .title-area h1 {
+      font-size: 1.6rem;
       font-weight: 800;
-      color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 4px;
     }
-    .dash-title-group p {
-      font-size: 0.9rem;
+
+    .title-area p {
+      font-size: 0.88rem;
       color: #a7f3d0;
       margin: 0;
     }
-    .class-tabs-bar {
+
+    .tool-controls {
       display: flex;
+      align-items: center;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 20px;
     }
-    .class-tab-btn {
-      background: #1e293b;
-      color: #94a3b8;
-      border: 1.5px solid #334155;
-      padding: 8px 16px;
-      border-radius: 12px;
+
+    .tool-select, .btn-tool {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: 8px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       cursor: pointer;
+      outline: none;
       transition: all 0.2s;
     }
-    .class-tab-btn:hover {
-      background: #334155;
-      color: #ffffff;
-    }
-    .class-tab-btn.active {
-      background: #059669;
-      color: #ffffff;
-      border-color: #34d399;
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
-    }
-    .stats-summary-card {
+
+    .tool-select option {
       background: #1e293b;
-      border: 1px solid #334155;
+      color: #ffffff;
+    }
+
+    .btn-tool:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* 繳交率統計面板 */
+    .stats-panel {
+      background: var(--dash-card-bg);
+      border: 1.5px solid var(--dash-border);
       border-radius: 16px;
       padding: 18px 24px;
-      margin-bottom: 24px;
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      align-items: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
     }
-    .stat-pill {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.95rem;
-      font-weight: 700;
-    }
-    .stat-pill strong {
-      font-size: 1.4rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .color-green { color: #34d399; }
-    .color-yellow { color: #fbbf24; }
-    .color-gray { color: #94a3b8; }
 
-    /* 35人座號方格矩陣 */
-    .seats-grid {
+    .stats-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stats-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--dash-text-dark);
+    }
+
+    .stats-counter {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 14px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    body.dark-mode .progress-bar-container { background: #334155; }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--dash-progress-fill);
+      transition: width 0.4s ease;
+    }
+
+    .action-subbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tool-btn-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action-primary {
+      background: var(--dash-primary);
+      color: #ffffff;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .btn-action-teal {
+      background: #0d9488;
+      color: #ffffff;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    /* 主資訊區 */
+    .dashboard-main-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 992px) {
+      .dashboard-main-grid { grid-template-columns: 1fr; }
+    }
+
+    .leaderboard-card, .seat-matrix-card {
+      background: var(--dash-card-bg);
+      border: 1.5px solid var(--dash-border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    }
+
+    .matrix-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    /* 35 人卡片網格 */
+    .seat-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
       gap: 12px;
     }
+
     .seat-card {
-      background: #1e293b;
-      border: 1.5px solid #334155;
-      border-radius: 14px;
-      padding: 12px 10px;
+      background: var(--dash-card-bg);
+      border: 1.5px solid var(--dash-border);
+      border-radius: 12px;
+      padding: 10px 8px;
       text-align: center;
       transition: all 0.2s;
+      cursor: pointer;
       position: relative;
     }
-    .seat-card.done-10 {
-      background: rgba(5, 150, 105, 0.2);
+
+    .seat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .seat-card.absent {
+      opacity: 0.55;
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    body.dark-mode .seat-card.absent { background: #1e293b; }
+
+    .seat-card.done-full {
+      background: #ecfdf5;
       border-color: #10b981;
     }
+
+    body.dark-mode .seat-card.done-full { background: rgba(16, 185, 129, 0.2); }
+
     .seat-card.done-partial {
-      background: rgba(217, 119, 6, 0.2);
+      background: #fffbeb;
       border-color: #f59e0b;
     }
+
+    body.dark-mode .seat-card.done-partial { background: rgba(245, 158, 11, 0.2); }
+
     .seat-num {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 800;
       font-family: 'JetBrains Mono', monospace;
-      color: #ffffff;
+      color: var(--dash-text-dark);
       margin-bottom: 2px;
     }
+
     .seat-name {
       font-size: 0.85rem;
-      color: #cbd5e1;
-      margin-bottom: 6px;
+      font-weight: 700;
+      color: var(--text-main);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-bottom: 6px;
     }
-    .seat-status-pill {
-      font-size: 0.75rem;
+
+    /* 🌟 五島微型通關指示小徽章 (一秒看清哪幾島通關) */
+    .island-dots-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .dot-island {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      font-size: 0.65rem;
       font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      color: #94a3b8;
+    }
+
+    body.dark-mode .dot-island { background: #334155; color: #64748b; }
+
+    .dot-island.active {
+      background: #10b981;
+      color: #ffffff;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+    }
+
+    .seat-points-pill {
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
       display: inline-block;
     }
-    .pill-green { background: #065f46; color: #6ee7b7; border: 1px solid #10b981; }
-    .pill-yellow { background: #78350f; color: #fde68a; border: 1px solid #f59e0b; }
-    .pill-gray { background: #334155; color: #94a3b8; }
+
+    .pill-green { background: #dcfce7; color: #166534; }
+    .pill-yellow { background: #fef3c7; color: #92400e; }
+    .pill-gray { background: #f1f5f9; color: #64748b; }
+
+    /* 手動補登 Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(6px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-content {
+      background: var(--dash-card-bg);
+      border: 2px solid var(--dash-border);
+      border-radius: 18px;
+      padding: 26px;
+      max-width: 440px;
+      width: 90%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 4px; color: var(--dash-text-dark); }
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1.5px solid var(--dash-border);
+      background: var(--dash-card-bg);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+    }
   </style>
 </head>
 <body>
-  <div class="dash-header">
-    <div class="dash-title-group">
+
+  <!-- 頂部工具列 (完全比照正課 dashboard) -->
+  <div class="top-toolbar">
+    <div class="title-area">
       <h1>🌴 生物探索群島 ‧ 寒假集點大螢幕即時儀表板</h1>
-      <p>即時連動 Google 試算表 ‧ 自動計算累積點數 (每島2點，滿五島10點 🏆) ‧ 班級座號防呆排序</p>
+      <p>即時連動 Google 試算表 ‧ 自動計算累積點數 (每島2點，滿五島10點 🏆) ‧ 五島通關視覺化微型矩陣</p>
     </div>
-    <div style="display:flex; gap:10px; align-items:center;">
-      <a href="index.html" class="btn-dispatch" style="background:#0f172a; border-color:#475569; text-decoration:none;">⬅ 返回派卷大廳</a>
-      <a href="https://docs.google.com/spreadsheets/d/10UqCGE3RFF8ozW4XZ0jFpMmYHmsuiy3AqjbYBF8iifw/edit?gid=1054105136#gid=1054105136" target="_blank" class="btn-dispatch" style="background:#059669; border-color:#34d399; text-decoration:none;">📑 開啟成績試算表</a>
+
+    <div class="tool-controls">
+      <!-- 班級選擇 -->
+      <select id="selectClass" class="tool-select" onchange="handleClassChange()">
+        <option value="701" selected>701 班</option>
+        <option value="702">702 班</option>
+        <option value="703">703 班</option>
+        <option value="704">704 班</option>
+        <option value="705">705 班</option>
+        <option value="706">706 班</option>
+        <option value="707">707 班</option>
+        <option value="708">708 班</option>
+        <option value="709">709 班</option>
+        <option value="710">710 班</option>
+      </select>
+
+      <!-- 應到人數自訂 (老師自由選擇人數) -->
+      <div style="display:flex; align-items:center; gap:4px; background:rgba(255,255,255,0.18); padding:4px 8px; border-radius:8px;">
+        <span style="font-size:0.85rem; font-weight:700;">應到:</span>
+        <input type="number" id="inputExpectedCount" value="30" min="1" max="40" style="width:48px; font-weight:800; padding:2px; border-radius:4px; border:none; text-align:center;" oninput="handleExpectedCountChange()">
+        <span style="font-size:0.85rem;">人</span>
+      </div>
+
+      <!-- 明亮 / 夜間雙模式切換 -->
+      <button type="button" class="btn-tool" onclick="toggleDarkMode()">
+        <span id="themeBtnText">🌙 夜間模式</span>
+      </button>
+
+      <!-- 手動補登成績按鈕 -->
+      <button type="button" class="btn-tool" style="background:#0d9488; border-color:#2dd4bf;" onclick="openManualModal()">
+        ✍️ 手動補登
+      </button>
+
+      <!-- 試算表直通 -->
+      <a href="https://docs.google.com/spreadsheets/d/10UqCGE3RFF8ozW4XZ0jFpMmYHmsuiy3AqjbYBF8iifw/edit?gid=1054105136#gid=1054105136" target="_blank" class="btn-tool" style="background:#059669; text-decoration:none;">
+        📑 成績試算表
+      </a>
     </div>
   </div>
 
-  <!-- 班級快速切換切片 -->
-  <div class="class-tabs-bar" id="classTabsBar"></div>
+  <!-- 統計進度條面板 -->
+  <div class="stats-panel">
+    <div class="stats-header">
+      <div class="stats-title"><span id="displayClassTitle">701</span> 班 寒假生物島探索與集點總覽</div>
+      <div class="stats-counter">
+        已繳交：<span id="submittedCount" style="color:#10b981; font-weight:800;">0</span> / 
+        實到應交：<span id="actualExpectedCount">30</span> 人 
+        (<span id="ratePercent" style="color:var(--dash-primary); font-weight:800;">0%</span>)
+      </div>
+    </div>
 
-  <!-- 統計摘記卡片 -->
-  <div class="stats-summary-card">
-    <div class="stat-pill">目前班級：<span id="currentClassName" style="color:#6ee7b7;">701 班</span></div>
-    <div class="stat-pill">🟢 10 點滿分：<strong id="statCountFull" class="color-green">0</strong> 人</div>
-    <div class="stat-pill">🟡 部分集點 (2~8點)：<strong id="statCountPart" class="color-yellow">0</strong> 人</div>
-    <div class="stat-pill">⚪ 尚未開始：<strong id="statCountNone" class="color-gray">35</strong> 人</div>
+    <div class="progress-bar-container">
+      <div id="progressBarFill" class="progress-bar-fill"></div>
+    </div>
+
+    <div class="action-subbar">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <label style="font-weight:800; font-size:0.9rem;">🏖️ 請假座號：</label>
+        <input type="text" id="inputAbsentSeats" class="form-control" style="width:240px; padding:4px 10px; font-size:0.88rem;" placeholder="例如 03, 14 (點擊卡片可標記)" oninput="handleAbsentChange()">
+      </div>
+
+      <div class="tool-btn-group">
+        <button type="button" class="btn-action-primary" onclick="copyMissingList()">📋 複製未交名單</button>
+        <button type="button" class="btn-action-teal" onclick="exportCsv()">📥 匯出 CSV</button>
+      </div>
+    </div>
   </div>
 
-  <!-- 35 人座號方格矩陣 -->
-  <div class="seats-grid" id="seatsMatrixGrid"></div>
+  <!-- 主資訊區：左側 Top 5，右側座號方格 -->
+  <div class="dashboard-main-grid">
+    
+    <!-- 左側：集點榮譽英雄榜 -->
+    <div class="leaderboard-card">
+      <h3 style="font-size:1.15rem; font-weight:800; color:var(--dash-text-dark); margin-bottom:12px;">
+        🏆 寒假滿分 10 點榮譽榜
+      </h3>
+      <div id="leaderboardList">
+        <p style="color:var(--text-muted); font-size:0.88rem; text-align:center; padding:2rem 0;">
+          尚無繳交紀錄<br>等待學生登島集點
+        </p>
+      </div>
+    </div>
+
+    <!-- 右側：全班 1~N 號完成狀態圖 -->
+    <div class="seat-matrix-card">
+      <div class="matrix-header">
+        <h2 style="font-size:1.2rem; font-weight:800; color:var(--dash-text-dark);">
+          🔢 全班座號完成狀態圖 (點擊卡片可切換請假 / 手動補登)
+        </h2>
+        <small style="color:#64748b; font-weight:600;">
+          徽章標示：1(生命) 2(營養) 3(循環) 4(協調) 5(恆定)
+        </small>
+      </div>
+
+      <div id="seatGrid" class="seat-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- ✍️ 手動補登學生成績 Modal -->
+  <div id="manualModal" class="modal-overlay" onclick="closeManualModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <h3 style="font-size:1.25rem; font-weight:800; color:var(--dash-primary); margin-bottom:14px;">✍️ 手動補登生物島集點成績</h3>
+
+      <div class="form-group">
+        <label class="form-label">座號 (01~40)</label>
+        <input type="text" id="mSeat" class="form-control" placeholder="例如：08">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">學生姓名</label>
+        <input type="text" id="mName" class="form-control" placeholder="例如：王小明">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">勾選已通關島嶼 (每島 2 點)</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px;">
+          <label style="font-size:0.88rem; font-weight:700;"><input type="checkbox" id="mIs1" checked> 1 生命特性 (2點)</label>
+          <label style="font-size:0.88rem; font-weight:700;"><input type="checkbox" id="mIs2" checked> 2 能量營養 (2點)</label>
+          <label style="font-size:0.88rem; font-weight:700;"><input type="checkbox" id="mIs3" checked> 3 流動循環 (2點)</label>
+          <label style="font-size:0.88rem; font-weight:700;"><input type="checkbox" id="mIs4" checked> 4 感知協調 (2點)</label>
+          <label style="font-size:0.88rem; font-weight:700;"><input type="checkbox" id="mIs5" checked> 5 恆定維持 (2點)</label>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:20px;">
+        <button type="button" class="btn-action-primary" style="flex:1;" onclick="submitManualGrade()">確認保存補登</button>
+        <button type="button" class="btn-tool" style="background:#64748b;" onclick="closeManualModal()">取消</button>
+      </div>
+    </div>
+  </div>
 
   <script>
-    let activeClass = '701';
-    const classes = ['701','702','703','704','705','706','707','708','709','710'];
+    let expectedCount = 30;
+    let absentSeats = [];
+    let studentsData = {}; // 以座號為 key 的成績暫存
 
-    function renderClassTabs() {
-      const container = document.getElementById('classTabsBar');
-      container.innerHTML = '';
-      classes.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = `class-tab-btn ${c === activeClass ? 'active' : ''}`;
-        btn.textContent = `${c} 班`;
-        btn.onclick = () => switchClass(c);
-        container.appendChild(btn);
-      });
+    // 1. 人數自訂
+    function handleExpectedCountChange() {
+      const val = parseInt(document.getElementById('inputExpectedCount').value, 10);
+      expectedCount = (val && val > 0) ? Math.min(val, 40) : 30;
+      renderGrid();
+      updateStats();
     }
 
-    function switchClass(cls) {
-      activeClass = cls;
-      document.getElementById('currentClassName').textContent = `${cls} 班`;
-      renderClassTabs();
-      renderMatrix();
+    // 2. 班級切換
+    function handleClassChange() {
+      const cls = document.getElementById('selectClass').value;
+      document.getElementById('displayClassTitle').textContent = cls;
+      absentSeats = [];
+      document.getElementById('inputAbsentSeats').value = '';
+      studentsData = {};
+      renderGrid();
+      updateStats();
     }
 
-    function renderMatrix() {
-      const grid = document.getElementById('seatsMatrixGrid');
+    // 3. 明亮 / 夜間雙模式切換
+    function toggleDarkMode() {
+      const isDark = document.body.classList.toggle('dark-mode');
+      localStorage.setItem('bio_island_dash_theme', isDark ? 'dark' : 'light');
+      document.getElementById('themeBtnText').textContent = isDark ? '☀️ 明亮模式' : '🌙 夜間模式';
+    }
+
+    (function initTheme() {
+      const saved = localStorage.getItem('bio_island_dash_theme') || 'light';
+      if (saved === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeBtnText').textContent = '☀️ 明亮模式';
+      }
+    })();
+
+    // 4. 請假名單輸入
+    function handleAbsentChange() {
+      const raw = document.getElementById('inputAbsentSeats').value;
+      absentSeats = raw.split(/[,，\s]+/).filter(Boolean).map(s => s.padStart(2, '0'));
+      renderGrid();
+      updateStats();
+    }
+
+    // 5. 點擊座號卡標記請假
+    function toggleSeatAbsent(seatStr) {
+      const idx = absentSeats.indexOf(seatStr);
+      if (idx >= 0) absentSeats.splice(idx, 1);
+      else absentSeats.push(seatStr);
+      document.getElementById('inputAbsentSeats').value = absentSeats.join(', ');
+      renderGrid();
+      updateStats();
+    }
+
+    // 6. 渲染 35 人 (或 N 人) 網格與五島徽章微型矩陣
+    function renderGrid() {
+      const grid = document.getElementById('seatGrid');
       grid.innerHTML = '';
 
-      for (let i = 1; i <= 35; i++) {
+      for (let i = 1; i <= expectedCount; i++) {
         const seatStr = String(i).padStart(2, '0');
+        const isAbsent = absentSeats.includes(seatStr);
+        const data = studentsData[seatStr];
+
         const card = document.createElement('div');
-        card.className = 'seat-card';
+        card.className = `seat-card ${isAbsent ? 'absent' : ''}`;
+
+        // 通關判斷
+        let isDoneFull = false;
+        let isDonePart = false;
+        let points = 0;
+        let badges = [false, false, false, false, false];
+
+        if (data && !isAbsent) {
+          badges = [data.is1, data.is2, data.is3, data.is4, data.is5];
+          const doneCount = badges.filter(Boolean).length;
+          points = doneCount * 2;
+          if (doneCount === 5) {
+            isDoneFull = true;
+            card.classList.add('done-full');
+          } else if (doneCount > 0) {
+            isDonePart = true;
+            card.classList.add('done-partial');
+          }
+        }
+
+        // 🌟 五島微型通關點點 (1, 2, 3, 4, 5)
+        const dotsHtml = badges.map((b, idx) => `
+          <span class="dot-island ${b ? 'active' : ''}" title="第${idx+1}島: ${b ? '已通關' : '未完成'}">${idx+1}</span>
+        `).join('');
+
+        let pillHtml = `<span class="seat-points-pill pill-gray">未繳交</span>`;
+        if (isAbsent) {
+          pillHtml = `<span class="seat-points-pill pill-gray">🏖️ 請假</span>`;
+        } else if (isDoneFull) {
+          pillHtml = `<span class="seat-points-pill pill-green">10 點 🏆</span>`;
+        } else if (isDonePart) {
+          pillHtml = `<span class="seat-points-pill pill-yellow">${points} 點</span>`;
+        }
+
         card.innerHTML = `
           <div class="seat-num">${seatStr} 號</div>
-          <div class="seat-name">未繳交</div>
-          <div class="seat-status-pill pill-gray">0 點 (0/5)</div>
+          <div class="seat-name">${data ? data.name : (isAbsent ? '請假' : '未交')}</div>
+          <div class="island-dots-row">${dotsHtml}</div>
+          <div>${pillHtml}</div>
         `;
+
+        card.onclick = () => toggleSeatAbsent(seatStr);
         grid.appendChild(card);
       }
     }
 
+    // 7. 更新統計與英雄榜
+    function updateStats() {
+      const actualExpected = Math.max(0, expectedCount - absentSeats.length);
+      document.getElementById('actualExpectedCount').textContent = actualExpected;
+
+      let submittedCount = 0;
+      let fullCount = 0;
+      const heroes = [];
+
+      for (let i = 1; i <= expectedCount; i++) {
+        const seatStr = String(i).padStart(2, '0');
+        if (absentSeats.includes(seatStr)) continue;
+        const d = studentsData[seatStr];
+        if (d) {
+          submittedCount++;
+          const doneCount = [d.is1, d.is2, d.is3, d.is4, d.is5].filter(Boolean).length;
+          if (doneCount === 5) {
+            fullCount++;
+            heroes.push(`${seatStr} 號 ${d.name}`);
+          }
+        }
+      }
+
+      document.getElementById('submittedCount').textContent = submittedCount;
+      const rate = actualExpected > 0 ? Math.round((submittedCount / actualExpected) * 100) : 0;
+      document.getElementById('ratePercent').textContent = `${rate}%`;
+      document.getElementById('progressBarFill').style.width = `${rate}%`;
+
+      // 英雄榜
+      const heroBox = document.getElementById('leaderboardList');
+      if (heroes.length > 0) {
+        heroBox.innerHTML = heroes.map((h, idx) => `
+          <div style="padding:8px 12px; background:rgba(16,185,129,0.15); border:1px solid #10b981; border-radius:8px; margin-bottom:6px; font-weight:700; font-size:0.9rem;">
+            🥇 ${h} (10 點滿分 🏆)
+          </div>
+        `).join('');
+      } else {
+        heroBox.innerHTML = `
+          <p style="color:var(--text-muted); font-size:0.88rem; text-align:center; padding:2rem 0;">
+            尚無滿分同學<br>完成 5 座島即可榮登英雄榜！
+          </p>
+        `;
+      }
+    }
+
+    // 8. 手動補登功能
+    function openManualModal() {
+      document.getElementById('manualModal').classList.add('active');
+    }
+
+    function closeManualModal(e) {
+      if (!e || e.target.id === 'manualModal') {
+        document.getElementById('manualModal').classList.remove('active');
+      }
+    }
+
+    function submitManualGrade() {
+      const seat = document.getElementById('mSeat').value.trim().padStart(2, '0');
+      const name = document.getElementById('mName').value.trim() || '學生';
+      if (!seat) return alert('請輸入座號！');
+
+      studentsData[seat] = {
+        name: name,
+        is1: document.getElementById('mIs1').checked,
+        is2: document.getElementById('mIs2').checked,
+        is3: document.getElementById('mIs3').checked,
+        is4: document.getElementById('mIs4').checked,
+        is5: document.getElementById('mIs5').checked
+      };
+
+      document.getElementById('manualModal').classList.remove('active');
+      renderGrid();
+      updateStats();
+      alert(`✅ 已成功手動補登 ${seat} 號 ${name} 的生物島集點成績！`);
+    }
+
+    // 9. 複製未交名單
+    function copyMissingList() {
+      const missing = [];
+      for (let i = 1; i <= expectedCount; i++) {
+        const s = String(i).padStart(2, '0');
+        if (!absentSeats.includes(s) && !studentsData[s]) {
+          missing.push(s);
+        }
+      }
+      const text = `【${document.getElementById('selectClass').value} 班】未繳交座號名單：${missing.join(', ') || '全數完成！'}`;
+      navigator.clipboard.writeText(text).then(() => alert('📋 已複製未交名單至剪貼簿！\n\n' + text));
+    }
+
+    // 10. 匯出 CSV
+    function exportCsv() {
+      let csv = "班級,座號,姓名,累積點數,島一,島二,島三,島四,島五\n";
+      const cls = document.getElementById('selectClass').value;
+      for (let i = 1; i <= expectedCount; i++) {
+        const s = String(i).padStart(2, '0');
+        const d = studentsData[s];
+        if (d) {
+          const count = [d.is1, d.is2, d.is3, d.is4, d.is5].filter(Boolean).length;
+          csv += `${cls},'${s},${d.name},${count*2}點,${d.is1?'✅':'-'},${d.is2?'✅':'-'},${d.is3?'✅':'-'},${d.is4?'✅':'-'},${d.is5?'✅':'-'}\n`;
+        } else {
+          csv += `${cls},'${s},未交,0點,-,-,-,-,-\n`;
+        }
+      }
+      const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `生物島集點成績_${cls}班.csv`;
+      a.click();
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
-      renderClassTabs();
-      renderMatrix();
+      renderGrid();
+      updateStats();
     });
   </script>
 </body>
