@@ -1,0 +1,486 @@
+/* ==========================================================================
+   🏛️ 大廳六：生物 3D 探索群島 (bio-island) 
+   完全對齊「大廳四」乾淨典雅風格：純淨白底、清晰分類收合、圓角卡片、細緻標籤
+   主題色：經典琥珀亮橘/暖橙 (#ea580c / #c2410c)
+   ========================================================================== */
+
+:root, [data-theme="light"] {
+  --primary-color: #ea580c;
+  --primary-hover: #c2410c;
+  --bg-gradient: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  --body-bg: #fffbf5;
+  --card-bg: #ffffff;
+  --card-border: #fed7aa;
+  --text-main: #7c2d12;
+  --text-sub: #9a3412;
+  --text-muted: #64748b;
+  --accent-gold: #f59e0b;
+  --shadow-sm: 0 4px 15px rgba(234, 88, 12, 0.06);
+  --shadow-md: 0 10px 25px rgba(234, 88, 12, 0.08);
+}
+
+[data-theme="dark"] {
+  --primary-color: #f97316;
+  --primary-hover: #ea580c;
+  --bg-gradient: linear-gradient(135deg, #1c130c 0%, #110b06 100%);
+  --body-bg: #110b06;
+  --card-bg: #1e1711;
+  --card-border: #432818;
+  --text-main: #ffedd5;
+  --text-sub: #fed7aa;
+  --text-muted: #94a3b8;
+  --accent-gold: #f59e0b;
+  --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+  padding-bottom: 60px;
+}
+
+.lobby-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+/* 頂部 Header：與大廳一至五 100% 相同秩序 */
+.lobby-header {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 20px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.logo-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.hall-tag {
+  display: inline-block;
+  background: #ffedd5;
+  color: var(--primary-color);
+  border: 1px solid var(--card-border);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.hall-title {
+  margin: 0 0 6px 0;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hall-title code {
+  font-size: 1.05rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #ffedd5;
+  color: var(--primary-color);
+  font-family: monospace;
+}
+
+.hall-subtitle {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.top-util-btn {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1.5px solid var(--card-border);
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.top-util-btn:hover {
+  background: #ffedd5;
+  color: var(--primary-hover);
+}
+
+/* 跨大廳統一導覽膠囊列 */
+.unified-hall-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  border-top: 1px dashed var(--card-border);
+}
+
+.nav-chip {
+  text-decoration: none;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-chip:hover {
+  background: #ffedd5;
+  color: var(--primary-color);
+  border-color: var(--card-border);
+}
+
+.nav-chip.active {
+  background: var(--primary-color);
+  color: #ffffff;
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35);
+}
+
+/* 分類導覽與展開/折疊列 (完全比照大廳四) */
+.lobby-bar-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lobby-bar-actions h2 {
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.collapse-all-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-toggle-all {
+  background: #ffffff;
+  color: var(--primary-color);
+  border: 1.5px solid var(--card-border);
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-toggle-all:hover {
+  background: #ffedd5;
+}
+
+/* 分類外框大白卡 (比照大廳四 .category-section) */
+.category-section {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: 20px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.category-header {
+  background: #fff7ed;
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.cat-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cat-icon {
+  font-size: 1.5rem;
+}
+
+.cat-title-group h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.count-badge {
+  display: inline-block;
+  background: #ffedd5;
+  color: var(--primary-color);
+  border: 1px solid var(--card-border);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.btn-collapse-toggle {
+  background: #ffffff;
+  color: var(--primary-color);
+  border: 1px solid var(--card-border);
+  padding: 4px 12px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.category-body {
+  padding: 24px;
+}
+
+.category-section.collapsed .category-body {
+  display: none;
+}
+
+.category-section.collapsed .category-header {
+  border-bottom: none;
+}
+
+/* 網格卡片佈局 (完全比照大廳四 .tools-grid) */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.tool-card {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: 18px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 24px rgba(234, 88, 12, 0.12);
+}
+
+.card-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.bg-orange {
+  background: #ffedd5;
+  color: var(--primary-color);
+}
+
+.bg-green {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.bg-blue {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.bg-gray {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.card-icon {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+}
+
+.tool-card h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.card-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+/* 標籤群 (比照大廳四 .card-tags) */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.card-tags span {
+  background: #fff7ed;
+  color: var(--text-sub);
+  border: 1px solid #fed7aa;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* 操作按鈕群 (比照大廳四 .card-actions) */
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-launch {
+  flex: 1;
+  background: var(--primary-color);
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-launch:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+}
+
+.btn-qr-action {
+  background: #fff7ed;
+  color: var(--primary-color);
+  border: 1.5px solid var(--card-border);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-qr-action:hover {
+  background: #ffedd5;
+  transform: translateY(-2px);
+}
+
+/* 白板投影 QR Code 彈窗 Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-box {
+  background: #ffffff;
+  border: 2px solid var(--card-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  padding: 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  position: relative;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.qr-box {
+  background: #ffffff;
+  padding: 14px;
+  border: 1px solid #fed7aa;
+  border-radius: 14px;
+  display: inline-block;
+  margin: 16px 0;
+}
+
+.qr-select {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--card-border);
+  background: #ffffff;
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 0.9rem;
+  outline: none;
+}

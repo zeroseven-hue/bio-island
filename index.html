@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>國中七年級生物 3D 探索群島 派發與總覽大廳</title>
+  <link rel="stylesheet" href="assets/css/hub.css?v=3.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <!-- 離線純 JS QR Code 函式庫 -->
+  <script src="assets/js/qrcode.min.js"></script>
+
+<style id="pinGatekeeperStyle">
+/* 🔒 教師安全防護 PIN 密碼鎖樣式 (與正課 100% 一致) */
+.pin-modal-overlay {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+  background: rgba(15, 23, 42, 0.96) !important;
+  backdrop-filter: blur(16px) !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 9999999 !important;
+}
+.pin-modal-overlay.hidden {
+  display: none !important;
+}
+.pin-modal-card {
+  background: #1e293b !important;
+  border: 2px solid #0d9488 !important;
+  border-radius: 24px !important;
+  padding: 36px 28px !important;
+  text-align: center !important;
+  max-width: 420px !important;
+  width: 90% !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+  animation: pinPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif !important;
+}
+@keyframes pinPopIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.pin-icon {
+  font-size: 3.2rem !important;
+  margin-bottom: 12px !important;
+  line-height: 1 !important;
+}
+.pin-modal-card h2 {
+  font-size: 1.45rem !important;
+  color: #f8fafc !important;
+  margin: 0 0 10px 0 !important;
+  font-weight: 800 !important;
+}
+.pin-modal-card p {
+  color: #94a3b8 !important;
+  font-size: 0.92rem !important;
+  margin-bottom: 20px !important;
+  line-height: 1.5 !important;
+}
+.pin-modal-card input {
+  width: 82% !important;
+  padding: 12px !important;
+  font-size: 1.6rem !important;
+  text-align: center !important;
+  letter-spacing: 6px !important;
+  background: #0f172a !important;
+  border: 2px solid #334155 !important;
+  border-radius: 12px !important;
+  color: #2dd4bf !important;
+  margin-bottom: 12px !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+.pin-modal-card input:focus {
+  border-color: #0d9488 !important;
+  box-shadow: 0 0 12px rgba(13, 148, 136, 0.4) !important;
+}
+.pin-error-text {
+  color: #f87171 !important;
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  min-height: 22px !important;
+  margin-bottom: 14px !important;
+}
+.btn-pin-submit {
+  width: 100% !important;
+  padding: 13px !important;
+  background: linear-gradient(135deg, #0d9488, #0f766e) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+  font-size: 1.05rem !important;
+  cursor: pointer !important;
+  transition: opacity 0.2s, transform 0.1s !important;
+  box-sizing: border-box !important;
+}
+.btn-pin-submit:hover {
+  opacity: 0.95 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 巨幅全螢幕白板投影 Modal */
+.modal-overlay-fullscreen {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(12px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+.modal-overlay-fullscreen.active {
+  display: flex;
+}
+.fullscreen-qr-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 28px;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+}
+.fullscreen-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+  <!-- 頂部導覽列 (100% 對齊正課 hub.css 秩序) -->
+  <header class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <span>🌴 國中七年級生物 3D 探索群島平台</span>
+      <span class="navbar-badge">7年級自然領域</span>
+    </a>
+    <div class="nav-actions">
+      <button type="button" class="btn-nav" style="background: #0d9488; border-color: #14b8a6; color: #ffffff; cursor:pointer;" onclick="openTeacherPinGate()">
+        📊 教師即時繳交儀表板
+      </button>
+      <span style="font-size: 0.9rem; color: #cbd5e1;">智慧白板派卷系統</span>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- Hero Banner (與右圖一致的藍紫色圓角高雅橫幅) -->
+    <div class="hero-banner" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #0d9488 100%);">
+      <h1>【國中生物】3D 探索群島互動平台</h1>
+      <p>
+        生物課堂數位化：結合 WebGL 3D 擬真生態島嶼、跨島渡輪視角、顯微鏡對焦與寒假 10 點集點核查！<br>
+        教師可在白板一鍵投影派卷 QR Code，全班 iPad / 手機直接掃碼探索；亦可切換至【即時儀表板】監看全班 35 人集點進度。
+      </p>
+    </div>
+
+    <!-- 👨‍🏫 教師一鍵課堂派發與 QR Code 投影面板 (100% 對齊右圖版型) -->
+    <section class="dispatch-card">
+      <div class="dispatch-header">
+        <div class="dispatch-title">
+          <span>👨‍🏫 教師一鍵課堂派發與 QR Code 投影面板</span>
+        </div>
+        <span class="dispatch-badge">智慧教室 & 電子白板專用</span>
+      </div>
+      <p style="color: #475569; font-size: 0.95rem; margin-bottom: 0.8rem;">
+        請選擇本節課要派發的生物島嶼，點擊「投影大螢幕 QR Code」即可全螢幕放大展示，供全班學生持平板快速掃描！
+      </p>
+
+      <div class="dispatch-controls">
+        <select id="selectDispatchSheet" class="form-control" style="font-weight: 700; font-size: 1.05rem;" onchange="handleSelectChange()">
+          <option value="overview" data-title="【群島全覽】生物 3D 探索群島 ✕ 宏觀海圖與渡輪導覽 (全島全景)" selected>【群島全覽】生物 3D 探索群島 ✕ 宏觀海圖與渡輪導覽 (全景自主探索)</option>
+          <option value="island1" data-title="【島嶼 01】生命特性島 ✕ 顯微鏡對焦與細胞結構 (完成獲得 2 點)">【島嶼 01】生命特性島 ✕ 顯微鏡對焦與細胞結構 (完成獲得 2 點)</option>
+          <option value="island2" data-title="【島嶼 02】能量營養島 ✕ 光合作用實驗與消化酵素 (完成獲得 2 點)">【島嶼 02】能量營養島 ✕ 光合作用實驗與消化酵素 (完成獲得 2 點)</option>
+          <option value="island3" data-title="【島嶼 03】流動循環島 ✕ 水分蒸散與人體血液循環 (完成獲得 2 點)">【島嶼 03】流動循環島 ✕ 水分蒸散與人體血液循環 (完成獲得 2 點)</option>
+          <option value="island4" data-title="【島嶼 04】感知協調島 ✕ 神經反射弧與內分泌激素 (完成獲得 2 點)">【島嶼 04】感知協調島 ✕ 神經反射弧與內分泌激素 (完成獲得 2 點)</option>
+          <option value="island5" data-title="【島嶼 05】恆定維持島 ✕ 體溫呼吸胸腔與泌尿排泄 (完成獲得 2 點)">【島嶼 05】恆定維持島 ✕ 體溫呼吸胸腔與泌尿排泄 (完成獲得 2 點)</option>
+        </select>
+
+        <button type="button" class="btn-dispatch" onclick="handleGenerateDispatchQR()">
+          📱 投影大螢幕 QR Code
+        </button>
+
+        <button type="button" class="btn-dispatch btn-dispatch-secondary" onclick="handleCopyDispatchUrl(this)">
+          📋 複製派發連結
+        </button>
+      </div>
+
+      <!-- 快捷班級鎖定與防前人暫存 -->
+      <div style="display:flex; gap:14px; align-items:center; margin-top:14px; flex-wrap:wrap;">
+        <span style="font-size:0.92rem; font-weight:700; color:#334155;">班級鎖定：</span>
+        <select id="selectClassOption" class="form-control" style="width:auto; font-weight:700; padding:4px 10px;" onchange="handleSelectChange()">
+          <option value="">全體學生（不限班級）</option>
+          <option value="701">701 班</option>
+          <option value="702">702 班</option>
+          <option value="703">703 班</option>
+          <option value="704">704 班</option>
+          <option value="705">705 班</option>
+          <option value="706">706 班</option>
+          <option value="707">707 班</option>
+          <option value="708">708 班</option>
+          <option value="709">709 班</option>
+          <option value="710">710 班</option>
+        </select>
+        <label style="display:inline-flex; align-items:center; gap:6px; font-size:0.9rem; font-weight:700; color:#0f766e; cursor:pointer;">
+          <input type="checkbox" id="chkFreshReset" checked onchange="handleSelectChange()">
+          🔄 平板車換班防呆（新同學掃碼強制清空前人暫存）
+        </label>
+      </div>
+
+      <!-- QR Code 預覽與連結區塊 (與右圖 100% 一致) -->
+      <div class="dispatch-preview-row" style="margin-top:20px; display:flex; gap:24px; align-items:center; flex-wrap:wrap;">
+        <div style="background:#ffffff; padding:12px; border-radius:16px; border:1px solid #cbd5e1; box-shadow:0 4px 12px rgba(0,0,0,0.06); text-align:center;">
+          <div id="qrcodePreview"></div>
+          <div style="font-size:0.8rem; color:#64748b; margin-top:6px; font-weight:700;">📷 平板相機掃碼直接進入</div>
+        </div>
+
+        <div style="flex:1; min-width:300px;">
+          <h3 id="previewTitle" style="font-size:1.25rem; font-weight:800; color:#1e293b; margin-bottom:8px;">
+            【群島全覽】生物 3D 探索群島 ✕ 宏觀海圖與渡輪導覽
+          </h3>
+          <p style="font-size:0.88rem; color:#64748b; margin-bottom:10px;">學生派發填答專屬網址：</p>
+          <input type="text" id="targetUrlInput" readonly class="form-control" style="background:#f8fafc; font-family:monospace; font-size:0.9rem; color:#0f766e; margin-bottom:14px;" onclick="this.select()">
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button type="button" class="btn-dispatch" style="background:#6366f1; border-color:#818cf8;" onclick="handleGenerateDispatchQR()">
+              🟣 全螢幕大投影視窗
+            </button>
+            <a id="btnDirectOpen" href="https://biology-test-2428f-island.web.app/" target="_blank" class="btn-dispatch" style="background:#10b981; border-color:#34d399; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+              🚀 直接開啟群島探索
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 🔒 教師安全防護 PIN 密碼鎖 Modal (預設 8088 遮罩) -->
+  <div id="pinModalOverlay" class="pin-modal-overlay hidden">
+    <div class="pin-modal-card">
+      <div class="pin-icon">🔒</div>
+      <h2>教師管理安全門禁</h2>
+      <p>請輸入教師授權 PIN 碼以檢視學生即時繳交進度與成績試算表</p>
+      <input type="password" id="pinInput" placeholder="••••" maxlength="6" autocomplete="off" onkeydown="if(event.key==='Enter')handlePinSubmit()">
+      <div id="pinErrorText" class="pin-error-text"></div>
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn-pin-submit" onclick="handlePinSubmit()">解鎖並前往儀表板</button>
+        <button type="button" class="btn-pin-submit" style="background:#475569;" onclick="closeTeacherPinGate()">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 巨幅白板全螢幕 QR Code 投影視窗 -->
+  <div id="fullscreenQrModal" class="modal-overlay-fullscreen" onclick="closeFullscreenQR(event)">
+    <div class="fullscreen-qr-card" onclick="event.stopPropagation()">
+      <button class="fullscreen-close-btn" onclick="closeFullscreenQR()">×</button>
+      <h2 id="fsTitle" style="font-size:1.6rem; font-weight:800; color:#0f172a; margin-bottom:12px;">📱 請拿起平板掃碼登島</h2>
+      <p id="fsSubtitle" style="font-size:1.05rem; color:#475569; margin-bottom:20px;">【群島全覽】生物 3D 探索群島</p>
+      
+      <div style="background:#ffffff; padding:20px; border-radius:20px; display:inline-block; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid #cbd5e1;">
+        <div id="fsQrcodeCanvas"></div>
+      </div>
+
+      <div style="margin-top:20px; font-size:1.1rem; font-weight:700; color:#0d9488;">
+        ✨ 學生登入免密碼 ‧ 平板車防呆自帶乾淨重置
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const BASE_HOST = 'https://biology-test-2428f-island.web.app';
+
+    function getTargetUrl() {
+      const select = document.getElementById('selectDispatchSheet');
+      const val = select.value;
+      let path = '/';
+      if (val !== 'overview') {
+        path = `/${val}/`;
+      }
+      const params = new URLSearchParams();
+      const cls = document.getElementById('selectClassOption').value;
+      const isFresh = document.getElementById('chkFreshReset').checked;
+
+      if (cls) params.set('class', cls);
+      if (isFresh) params.set('reset', '1');
+      params.set('mode', 'class');
+
+      return `${BASE_HOST}${path}?${params.toString()}`;
+    }
+
+    function handleSelectChange() {
+      const select = document.getElementById('selectDispatchSheet');
+      const opt = select.options[select.selectedIndex];
+      const title = opt.getAttribute('data-title') || opt.text;
+      const url = getTargetUrl();
+
+      document.getElementById('previewTitle').textContent = title;
+      document.getElementById('targetUrlInput').value = url;
+      document.getElementById('btnDirectOpen').href = url;
+
+      // 產生預覽 QR Code (170x170)
+      const container = document.getElementById('qrcodePreview');
+      container.innerHTML = '';
+      new QRCode(container, {
+        text: url,
+        width: 170,
+        height: 170,
+        colorDark: "#0f172a",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    function handleGenerateDispatchQR() {
+      const url = getTargetUrl();
+      const select = document.getElementById('selectDispatchSheet');
+      const title = select.options[select.selectedIndex].getAttribute('data-title');
+      
+      document.getElementById('fsSubtitle').textContent = title;
+      const fsContainer = document.getElementById('fsQrcodeCanvas');
+      fsContainer.innerHTML = '';
+      new QRCode(fsContainer, {
+        text: url,
+        width: 320,
+        height: 320,
+        colorDark: "#0f172a",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      document.getElementById('fullscreenQrModal').classList.add('active');
+    }
+
+    function closeFullscreenQR(e) {
+      if (!e || e.target.id === 'fullscreenQrModal' || e.target.classList.contains('fullscreen-close-btn')) {
+        document.getElementById('fullscreenQrModal').classList.remove('active');
+      }
+    }
+
+    function handleCopyDispatchUrl(btn) {
+      const input = document.getElementById('targetUrlInput');
+      input.select();
+      navigator.clipboard.writeText(input.value).then(() => {
+        const originText = btn.textContent;
+        btn.textContent = '✅ 已複製連結！';
+        btn.style.background = '#059669';
+        btn.style.color = '#ffffff';
+        setTimeout(() => {
+          btn.textContent = originText;
+          btn.style.background = '';
+          btn.style.color = '';
+        }, 2000);
+      });
+    }
+
+    // 教師安全鎖邏輯
+    function openTeacherPinGate() {
+      const overlay = document.getElementById('pinModalOverlay');
+      const input = document.getElementById('pinInput');
+      document.getElementById('pinErrorText').textContent = '';
+      input.value = '';
+      overlay.classList.remove('hidden');
+      setTimeout(() => input.focus(), 150);
+    }
+
+    function closeTeacherPinGate() {
+      document.getElementById('pinModalOverlay').classList.add('hidden');
+    }
+
+    function handlePinSubmit() {
+      const input = document.getElementById('pinInput');
+      const err = document.getElementById('pinErrorText');
+      const pin = input.value.trim();
+      const savedPin = localStorage.getItem('teacher_global_pin') || '8088';
+
+      if (pin === savedPin) {
+        closeTeacherPinGate();
+        // 進入即時繳交儀表板
+        window.location.href = 'dashboard.html';
+      } else {
+        err.textContent = '❌ PIN 碼錯誤，請重新輸入！';
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    // 初始化
+    window.addEventListener('DOMContentLoaded', () => {
+      handleSelectChange();
+    });
+  </script>
+</body>
+</html>

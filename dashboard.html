@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="emerald">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>國中七年級生物 3D 探索群島 寒假集點即時儀表板</title>
+  <link rel="stylesheet" href="assets/css/hub.css?v=3.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: 'Noto Sans TC', sans-serif;
+      padding: 16px 20px 40px;
+    }
+    .dash-header {
+      background: linear-gradient(135deg, #064e3b 0%, #0f766e 100%);
+      padding: 20px 24px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .dash-title-group h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    .dash-title-group p {
+      font-size: 0.9rem;
+      color: #a7f3d0;
+      margin: 0;
+    }
+    .class-tabs-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .class-tab-btn {
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1.5px solid #334155;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .class-tab-btn:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+    .class-tab-btn.active {
+      background: #059669;
+      color: #ffffff;
+      border-color: #34d399;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+    }
+    .stats-summary-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .stat-pill strong {
+      font-size: 1.4rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .color-green { color: #34d399; }
+    .color-yellow { color: #fbbf24; }
+    .color-gray { color: #94a3b8; }
+
+    /* 35人座號方格矩陣 */
+    .seats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+    }
+    .seat-card {
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      border-radius: 14px;
+      padding: 12px 10px;
+      text-align: center;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .seat-card.done-10 {
+      background: rgba(5, 150, 105, 0.2);
+      border-color: #10b981;
+    }
+    .seat-card.done-partial {
+      background: rgba(217, 119, 6, 0.2);
+      border-color: #f59e0b;
+    }
+    .seat-num {
+      font-size: 1.25rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+    .seat-name {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .seat-status-pill {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .pill-green { background: #065f46; color: #6ee7b7; border: 1px solid #10b981; }
+    .pill-yellow { background: #78350f; color: #fde68a; border: 1px solid #f59e0b; }
+    .pill-gray { background: #334155; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="dash-header">
+    <div class="dash-title-group">
+      <h1>🌴 生物探索群島 ‧ 寒假集點大螢幕即時儀表板</h1>
+      <p>即時連動 Google 試算表 ‧ 自動計算累積點數 (每島2點，滿五島10點 🏆) ‧ 班級座號防呆排序</p>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <a href="index.html" class="btn-dispatch" style="background:#0f172a; border-color:#475569; text-decoration:none;">⬅ 返回派卷大廳</a>
+      <a href="https://docs.google.com/spreadsheets/d/1UgvWTD109MPFBxUKN-8RZCUpZ2ysFaKrTN5zeW3yAks/edit" target="_blank" class="btn-dispatch" style="background:#059669; border-color:#34d399; text-decoration:none;">📑 開啟成績試算表</a>
+    </div>
+  </div>
+
+  <!-- 班級快速切換切片 -->
+  <div class="class-tabs-bar" id="classTabsBar"></div>
+
+  <!-- 統計摘記卡片 -->
+  <div class="stats-summary-card">
+    <div class="stat-pill">目前班級：<span id="currentClassName" style="color:#6ee7b7;">701 班</span></div>
+    <div class="stat-pill">🟢 10 點滿分：<strong id="statCountFull" class="color-green">0</strong> 人</div>
+    <div class="stat-pill">🟡 部分集點 (2~8點)：<strong id="statCountPart" class="color-yellow">0</strong> 人</div>
+    <div class="stat-pill">⚪ 尚未開始：<strong id="statCountNone" class="color-gray">35</strong> 人</div>
+  </div>
+
+  <!-- 35 人座號方格矩陣 -->
+  <div class="seats-grid" id="seatsMatrixGrid"></div>
+
+  <script>
+    let activeClass = '701';
+    const classes = ['701','702','703','704','705','706','707','708','709','710'];
+
+    function renderClassTabs() {
+      const container = document.getElementById('classTabsBar');
+      container.innerHTML = '';
+      classes.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = `class-tab-btn ${c === activeClass ? 'active' : ''}`;
+        btn.textContent = `${c} 班`;
+        btn.onclick = () => switchClass(c);
+        container.appendChild(btn);
+      });
+    }
+
+    function switchClass(cls) {
+      activeClass = cls;
+      document.getElementById('currentClassName').textContent = `${cls} 班`;
+      renderClassTabs();
+      renderMatrix();
+    }
+
+    function renderMatrix() {
+      const grid = document.getElementById('seatsMatrixGrid');
+      grid.innerHTML = '';
+
+      for (let i = 1; i <= 35; i++) {
+        const seatStr = String(i).padStart(2, '0');
+        const card = document.createElement('div');
+        card.className = 'seat-card';
+        card.innerHTML = `
+          <div class="seat-num">${seatStr} 號</div>
+          <div class="seat-name">未繳交</div>
+          <div class="seat-status-pill pill-gray">0 點 (0/5)</div>
+        `;
+        grid.appendChild(card);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderClassTabs();
+      renderMatrix();
+    });
+  </script>
+</body>
+</html>
