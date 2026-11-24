@@ -36,101 +36,106 @@
       --text-main: #0f172a;
     }
 
-    /* 🌟 原版經典深邃星空夜間模式 (高對比、超清晰) */
+    /* 🌟 頂級高雅深邃星空夜間模式 (完全對齊正課 dashboard 經典 #1e293b 灰藍質感) */
     body.dark-mode {
-      --body-bg: #09131d !important;
-      --dash-card-bg: #111e2e !important;
-      --dash-border: #1e3a5f !important;
+      --body-bg: #0b1120 !important;
+      --dash-card-bg: #1e293b !important;
+      --dash-border: #334155 !important;
       --dash-text-dark: #f8fafc !important;
       --text-main: #f8fafc !important;
-      background-color: #09131d !important;
+      background-color: #0b1120 !important;
       color: #f8fafc !important;
     }
 
     body.dark-mode .top-toolbar {
-      background: linear-gradient(135deg, #091e1b 0%, #0d3832 50%, #115e59 100%) !important;
-      border: 1px solid #134e4a;
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #0d9488 100%) !important;
+      border: 1px solid #047857;
     }
 
-    body.dark-mode .stats-panel,
+    /* 左側英雄榜與右側卡片在夜間模式的溫潤色澤 */
     body.dark-mode .leaderboard-card,
+    body.dark-mode .stats-panel,
     body.dark-mode .seat-matrix-card {
-      background: #111e2e !important;
-      border-color: #1e3a5f !important;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+      background: #1e293b !important;
+      border-color: #334155 !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    body.dark-mode .leaderboard-card h3 {
+      color: #34d399 !important;
+      border-bottom: 2px solid #059669;
+      padding-bottom: 8px;
     }
 
     /* 🎯 遠看秒分的高對比座號卡片 (交了 vs 未交 一目瞭然) */
     .seat-card {
       background: var(--dash-card-bg);
-      border: 2px solid var(--dash-border);
+      border: 1.5px solid var(--dash-border);
       border-radius: 12px;
-      padding: 10px 8px;
+      padding: 12px 8px;
       text-align: center;
       transition: all 0.2s;
       cursor: pointer;
       position: relative;
     }
 
-    /* ① ⚪ 未繳交 (沉睡灰暗，一眼看出還沒動) */
+    /* ① ⚪ 未繳交 (舒適深藍灰底，座號清晰不刺眼) */
     .seat-card.unsubmitted {
-      opacity: 0.65;
-      background: #f8fafc;
-      border-color: #cbd5e1;
+      background: #ffffff;
+      border-color: #e2e8f0;
     }
     body.dark-mode .seat-card.unsubmitted {
-      opacity: 0.5;
-      background: #0d1724 !important;
-      border-color: #1a293c !important;
+      background: #162032 !important;
+      border-color: #27354a !important;
     }
     body.dark-mode .seat-card.unsubmitted .seat-num {
-      color: #64748b !important;
+      color: #94a3b8 !important;
     }
 
-    /* ② 🟢 10 點滿分全過 (亮綠發光，最醒目！) */
+    /* ② 🟢 10 點滿分全過 (溫潤翡翠綠光暈，超舒服！) */
     .seat-card.done-full {
       opacity: 1 !important;
       background: #ecfdf5 !important;
-      border-color: #10b981 !important;
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+      border: 1.5px solid #10b981 !important;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
     }
     body.dark-mode .seat-card.done-full {
       opacity: 1 !important;
-      background: rgba(16, 185, 129, 0.18) !important;
-      border: 2px solid #34d399 !important;
-      box-shadow: 0 0 16px rgba(52, 211, 153, 0.35) !important;
+      background: rgba(16, 185, 129, 0.16) !important;
+      border: 1.5px solid #34d399 !important;
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.25) !important;
     }
     body.dark-mode .seat-card.done-full .seat-num {
       color: #34d399 !important;
     }
 
-    /* ③ 🟡 部分過關 (鮮明琥珀黃，提示進行中) */
+    /* ③ 🟡 部分過關 (經典琥珀金，柔和不刺眼) */
     .seat-card.done-partial {
       opacity: 1 !important;
       background: #fffbeb !important;
-      border-color: #f59e0b !important;
-      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+      border: 1.5px solid #f59e0b !important;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.18);
     }
     body.dark-mode .seat-card.done-partial {
       opacity: 1 !important;
-      background: rgba(245, 158, 11, 0.16) !important;
-      border: 2px solid #fbbf24 !important;
-      box-shadow: 0 0 14px rgba(251, 191, 36, 0.3) !important;
+      background: rgba(245, 158, 11, 0.14) !important;
+      border: 1.5px solid #fbbf24 !important;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.2) !important;
     }
     body.dark-mode .seat-card.done-partial .seat-num {
       color: #fbbf24 !important;
     }
 
-    /* ④ 🏖️ 請假卡片 (淡紫藍標記) */
+    /* ④ 🏖️ 請假卡片 */
     .seat-card.absent {
       opacity: 0.7 !important;
       background: #f1f5f9 !important;
-      border: 2px dashed #94a3b8 !important;
+      border: 1.5px dashed #94a3b8 !important;
     }
     body.dark-mode .seat-card.absent {
       opacity: 0.6 !important;
-      background: #172033 !important;
-      border: 2px dashed #475569 !important;
+      background: #1e293b !important;
+      border: 1.5px dashed #475569 !important;
     }
 
     body {
