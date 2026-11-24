@@ -36,14 +36,101 @@
       --text-main: #0f172a;
     }
 
+    /* 🌟 原版經典深邃星空夜間模式 (高對比、超清晰) */
     body.dark-mode {
-      --body-bg: #0b1120 !important;
-      --dash-card-bg: #1e293b !important;
-      --dash-border: #334155 !important;
+      --body-bg: #09131d !important;
+      --dash-card-bg: #111e2e !important;
+      --dash-border: #1e3a5f !important;
       --dash-text-dark: #f8fafc !important;
       --text-main: #f8fafc !important;
-      background-color: #0b1120 !important;
+      background-color: #09131d !important;
       color: #f8fafc !important;
+    }
+
+    body.dark-mode .top-toolbar {
+      background: linear-gradient(135deg, #091e1b 0%, #0d3832 50%, #115e59 100%) !important;
+      border: 1px solid #134e4a;
+    }
+
+    body.dark-mode .stats-panel,
+    body.dark-mode .leaderboard-card,
+    body.dark-mode .seat-matrix-card {
+      background: #111e2e !important;
+      border-color: #1e3a5f !important;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /* 🎯 遠看秒分的高對比座號卡片 (交了 vs 未交 一目瞭然) */
+    .seat-card {
+      background: var(--dash-card-bg);
+      border: 2px solid var(--dash-border);
+      border-radius: 12px;
+      padding: 10px 8px;
+      text-align: center;
+      transition: all 0.2s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    /* ① ⚪ 未繳交 (沉睡灰暗，一眼看出還沒動) */
+    .seat-card.unsubmitted {
+      opacity: 0.65;
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+    body.dark-mode .seat-card.unsubmitted {
+      opacity: 0.5;
+      background: #0d1724 !important;
+      border-color: #1a293c !important;
+    }
+    body.dark-mode .seat-card.unsubmitted .seat-num {
+      color: #64748b !important;
+    }
+
+    /* ② 🟢 10 點滿分全過 (亮綠發光，最醒目！) */
+    .seat-card.done-full {
+      opacity: 1 !important;
+      background: #ecfdf5 !important;
+      border-color: #10b981 !important;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+    }
+    body.dark-mode .seat-card.done-full {
+      opacity: 1 !important;
+      background: rgba(16, 185, 129, 0.18) !important;
+      border: 2px solid #34d399 !important;
+      box-shadow: 0 0 16px rgba(52, 211, 153, 0.35) !important;
+    }
+    body.dark-mode .seat-card.done-full .seat-num {
+      color: #34d399 !important;
+    }
+
+    /* ③ 🟡 部分過關 (鮮明琥珀黃，提示進行中) */
+    .seat-card.done-partial {
+      opacity: 1 !important;
+      background: #fffbeb !important;
+      border-color: #f59e0b !important;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+    }
+    body.dark-mode .seat-card.done-partial {
+      opacity: 1 !important;
+      background: rgba(245, 158, 11, 0.16) !important;
+      border: 2px solid #fbbf24 !important;
+      box-shadow: 0 0 14px rgba(251, 191, 36, 0.3) !important;
+    }
+    body.dark-mode .seat-card.done-partial .seat-num {
+      color: #fbbf24 !important;
+    }
+
+    /* ④ 🏖️ 請假卡片 (淡紫藍標記) */
+    .seat-card.absent {
+      opacity: 0.7 !important;
+      background: #f1f5f9 !important;
+      border: 2px dashed #94a3b8 !important;
+    }
+    body.dark-mode .seat-card.absent {
+      opacity: 0.6 !important;
+      background: #172033 !important;
+      border: 2px dashed #475569 !important;
     }
 
     body {
@@ -574,7 +661,7 @@
         const data = studentsData[seatStr];
 
         const card = document.createElement('div');
-        card.className = `seat-card ${isAbsent ? 'absent' : ''}`;
+        card.className = `seat-card`;
 
         // 通關判斷
         let isDoneFull = false;
@@ -582,7 +669,9 @@
         let points = 0;
         let badges = [false, false, false, false, false];
 
-        if (data && !isAbsent) {
+        if (isAbsent) {
+          card.classList.add('absent');
+        } else if (data) {
           badges = [data.is1, data.is2, data.is3, data.is4, data.is5];
           const doneCount = badges.filter(Boolean).length;
           points = doneCount * 2;
@@ -592,7 +681,12 @@
           } else if (doneCount > 0) {
             isDonePart = true;
             card.classList.add('done-partial');
+          } else {
+            card.classList.add('unsubmitted');
           }
+        } else {
+          // 未繳交
+          card.classList.add('unsubmitted');
         }
 
         // 🌟 五島微型通關點點 (1, 2, 3, 4, 5)
