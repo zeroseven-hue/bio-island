@@ -379,33 +379,71 @@
       margin-bottom: 6px;
     }
 
-    /* 🌟 五島微型通關指示小徽章 (一秒看清哪幾島通關) */
+    /* 🌟 五島微型通關指示小徽章 (五島五色 + 暗色高對比發光) */
     .island-dots-row {
       display: flex;
       justify-content: center;
-      gap: 4px;
-      margin-bottom: 6px;
+      gap: 5px;
+      margin-bottom: 7px;
     }
 
     .dot-island {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      font-size: 0.65rem;
-      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      font-size: 0.72rem;
+      font-weight: 900;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       background: #e2e8f0;
       color: #94a3b8;
+      transition: all 0.25s ease;
     }
 
-    body.dark-mode .dot-island { background: #334155; color: #64748b; }
+    body.dark-mode .dot-island { 
+      background: #1e293b; 
+      color: #475569; 
+      border: 1px solid rgba(255,255,255,0.06);
+    }
 
-    .dot-island.active {
-      background: #10b981;
-      color: #ffffff;
-      box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+    /* 🌈 五島專屬主題色 (亮色模式) */
+    .dot-island.active.island-1 { background: #10b981; color: #ffffff; box-shadow: 0 0 8px rgba(16, 185, 129, 0.45); } /* 島1 翡翠綠 (生命) */
+    .dot-island.active.island-2 { background: #f59e0b; color: #ffffff; box-shadow: 0 0 8px rgba(245, 158, 11, 0.45); } /* 島2 琥珀金 (營養) */
+    .dot-island.active.island-3 { background: #0ea5e9; color: #ffffff; box-shadow: 0 0 8px rgba(14, 165, 233, 0.45); } /* 島3 蔚藍海 (循環) */
+    .dot-island.active.island-4 { background: #8b5cf6; color: #ffffff; box-shadow: 0 0 8px rgba(139, 92, 246, 0.45); } /* 島4 霓光紫 (協調) */
+    .dot-island.active.island-5 { background: #ec4899; color: #ffffff; box-shadow: 0 0 8px rgba(236, 72, 153, 0.45); } /* 島5 珊瑚粉 (恆定) */
+
+    /* 🌟 暗黑模式專屬：高飽和螢光色 + 霓虹輝光，一眼清晰分明！ */
+    body.dark-mode .dot-island.active.island-1 { 
+      background: #059669; 
+      color: #ffffff; 
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.8), inset 0 0 4px #a7f3d0; 
+      border-color: #34d399;
+    }
+    body.dark-mode .dot-island.active.island-2 { 
+      background: #d97706; 
+      color: #ffffff; 
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.8), inset 0 0 4px #fde68a; 
+      border-color: #fbbf24;
+    }
+    body.dark-mode .dot-island.active.island-3 { 
+      background: #0284c7; 
+      color: #ffffff; 
+      box-shadow: 0 0 10px rgba(14, 165, 233, 0.8), inset 0 0 4px #bae6fd; 
+      border-color: #38bdf8;
+    }
+    body.dark-mode .dot-island.active.island-4 { 
+      background: #7c3aed; 
+      color: #ffffff; 
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.8), inset 0 0 4px #ddd6fe; 
+      border-color: #a78bfa;
+    }
+    body.dark-mode .dot-island.active.island-5 { 
+      background: #db2777; 
+      color: #ffffff; 
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.8), inset 0 0 4px #fbcfe8; 
+      border-color: #f472b6;
     }
 
     .seat-points-pill {
@@ -555,9 +593,14 @@
         <h2 style="font-size:1.2rem; font-weight:800; color:var(--dash-text-dark);">
           🔢 全班座號完成狀態圖 (點擊卡片可切換請假 / 手動補登)
         </h2>
-        <small style="color:#64748b; font-weight:600;">
-          徽章標示：1(生命) 2(營養) 3(循環) 4(協調) 5(恆定)
-        </small>
+        <div style="display:inline-flex; align-items:center; gap:8px; font-size:0.84rem; font-weight:700;">
+          <span style="color:#64748b;">通關燈號：</span>
+          <span style="color:#10b981;">● 1生命</span>
+          <span style="color:#f59e0b;">● 2營養</span>
+          <span style="color:#0ea5e9;">● 3循環</span>
+          <span style="color:#8b5cf6;">● 4協調</span>
+          <span style="color:#ec4899;">● 5恆定</span>
+        </div>
       </div>
 
       <div id="seatGrid" class="seat-grid"></div>
@@ -736,9 +779,10 @@
           card.classList.add('unsubmitted');
         }
 
-        // 🌟 五島微型通關點點 (1, 2, 3, 4, 5)
+        // 🌟 五島微型通關點點 (1:生命翡翠綠, 2:營養琥珀金, 3:循環蔚藍, 4:協調霓光紫, 5:恆定珊瑚粉)
+        const islandTitles = ['島1 生命特性', '島2 能量營養', '島3 流動循環', '島4 感知協調', '島5 恆定維持'];
         const dotsHtml = badges.map((b, idx) => `
-          <span class="dot-island ${b ? 'active' : ''}" title="第${idx+1}島: ${b ? '已通關' : '未完成'}">${idx+1}</span>
+          <span class="dot-island island-${idx+1} ${b ? 'active' : ''}" title="${islandTitles[idx]}: ${b ? '✅ 已通關 (2點)' : '⚪ 未完成'}">${idx+1}</span>
         `).join('');
 
         // 🌟 資訊層次優化：乾淨俐落，絕不重複
