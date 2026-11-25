@@ -456,15 +456,28 @@
   <div id="fullscreenQrModal" class="modal-overlay-fullscreen" onclick="closeFullscreenQR(event)">
     <div class="fullscreen-qr-card" onclick="event.stopPropagation()">
       <button class="fullscreen-close-btn" onclick="closeFullscreenQR()">×</button>
-      <h2 id="fsTitle" style="font-size:1.6rem; font-weight:800; color:#19382f; margin-bottom:10px;">📱 請拿起平板掃碼登島</h2>
-      <p id="fsSubtitle" style="font-size:1.05rem; color:#4b6257; margin-bottom:18px;">【群島全覽】生物 3D 探索群島</p>
+      <h2 id="fsTitle" style="font-size:1.6rem; font-weight:800; color:#19382f; margin-bottom:8px;">📱 請拿起平板掃碼登島</h2>
+      <p id="fsSubtitle" style="font-size:1.05rem; color:#4b6257; margin-bottom:16px;">【群島全覽】生物 3D 探索群島</p>
       
       <div style="background:#ffffff; padding:18px; border-radius:18px; display:inline-block; box-shadow:0 10px 30px rgba(0,0,0,0.08); border:1.5px solid #d1ddd4;">
         <div id="fsQrcodeCanvas"></div>
       </div>
 
-      <div style="margin-top:18px; font-size:1.05rem; font-weight:700; color:#224a3e;">
-        ✨ 學生登入免密碼 ‧ 平板車換班防呆自帶乾淨重置
+      <!-- 🌟 QR Code 下方：直接開啟網址與一鍵複製按鈕群 -->
+      <div style="margin-top:16px; display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; max-width:380px; margin-left:auto; margin-right:auto;">
+        <div style="display:flex; width:100%; gap:8px;">
+          <input type="text" id="fsModalUrlInput" readonly style="flex:1; padding:8px 12px; font-size:0.85rem; border:1.5px solid #c7d6cd; border-radius:8px; background:#f4f7f5; color:#224a3e; text-overflow:ellipsis;" value="">
+          <button type="button" id="fsModalCopyBtn" onclick="copyModalUrl(this)" style="padding:8px 14px; font-size:0.88rem; font-weight:700; background:#224a3e; color:#ffffff; border:none; border-radius:8px; cursor:pointer; white-space:nowrap; transition:all 0.2s;">
+            📋 複製網址
+          </button>
+        </div>
+        <a id="fsModalOpenLink" href="#" target="_blank" style="display:inline-flex; align-items:center; justify-content:center; gap:6px; width:100%; padding:10px 16px; font-size:0.95rem; font-weight:800; color:#ffffff; background:#059669; text-decoration:none; border-radius:10px; box-shadow:0 4px 12px rgba(5,150,105,0.25); transition:all 0.2s;">
+          🚀 直接點擊開啟此島學生端連動網址 ➔
+        </a>
+      </div>
+
+      <div style="margin-top:14px; font-size:0.92rem; font-weight:700; color:#5c7269;">
+        ✨ 學生登入免密碼 ‧ 班級座號已預設 ‧ 平板車換班防呆自帶乾淨重置
       </div>
     </div>
   </div>
@@ -535,7 +548,28 @@
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
       });
+      // 🌟 同步填入 QR Code 下方的網址輸入框與直連按鈕
+      const input = document.getElementById('fsModalUrlInput');
+      if (input) input.value = url;
+      const link = document.getElementById('fsModalOpenLink');
+      if (link) link.href = url;
+
       document.getElementById('fullscreenQrModal').classList.add('active');
+    }
+
+    function copyModalUrl(btn) {
+      const input = document.getElementById('fsModalUrlInput');
+      if (!input || !input.value) return;
+      input.select();
+      navigator.clipboard.writeText(input.value).then(() => {
+        const originText = btn.textContent;
+        btn.textContent = '✅ 已複製！';
+        btn.style.background = '#059669';
+        setTimeout(() => {
+          btn.textContent = originText;
+          btn.style.background = '#224a3e';
+        }, 2000);
+      });
     }
 
     function closeFullscreenQR(e) {
