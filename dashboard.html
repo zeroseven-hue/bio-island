@@ -602,6 +602,37 @@
     let expectedCount = 30;
     let absentSeats = [];
     let studentsData = {}; // 以座號為 key 的成績暫存
+    const GAS_SCORE_URL = 'https://script.google.com/macros/s/AKfycbxr76Ryb3WxFnZZM2cWA6nTAiaKC2_UpJ63wzyYjhWXLDnf_Yh4Zpxa-W8lB5ZBazBX/exec';
+
+    // 0. 雲端試算表即時連動獲取最新成績
+    async function fetchCloudScores() {
+      try {
+        const cls = document.getElementById('selectClass').value;
+        const res = await fetch(`${GAS_SCORE_URL}?action=dashboard&t=${Date.now()}`);
+        if (!res.ok) return;
+        const json = await res.json();
+        if (json && json.ok && Array.isArray(json.students)) {
+          let updatedAny = false;
+          json.students.forEach(st => {
+            if (st.className === cls) {
+              studentsData[st.seat] = {
+                name: st.name,
+                is1: Boolean(st.is1),
+                is2: Boolean(st.is2),
+                is3: Boolean(st.is3),
+                is4: Boolean(st.is4),
+                is5: Boolean(st.is5)
+              };
+              updatedAny = true;
+            }
+          });
+          renderGrid();
+          updateStats();
+        }
+      } catch (err) {
+        console.warn('雲端成績同步中...', err);
+      }
+    }
 
     // 1. 人數自訂
     function handleExpectedCountChange() {
@@ -620,6 +651,7 @@
       studentsData = {};
       renderGrid();
       updateStats();
+      fetchCloudScores();
     }
 
     // 3. 明亮 / 夜間雙模式切換
@@ -845,6 +877,9 @@
     window.addEventListener('DOMContentLoaded', () => {
       renderGrid();
       updateStats();
+      fetchCloudScores();
+      // 每 8 秒自動背景輪詢試算表最新成績
+      setInterval(fetchCloudScores, 8000);
     });
   </script>
 </body>
