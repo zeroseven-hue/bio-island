@@ -115,9 +115,9 @@
       <span class="navbar-badge">7年級自然領域</span>
     </a>
     <div class="nav-actions">
-      <button type="button" class="btn-nav" style="background: #2a584a; border-color: #527a6c; color: #ffffff; cursor:pointer;" onclick="openTeacherPinGate()">
+      <a href="dashboard.html" class="btn-nav" style="background: #2a584a; border-color: #527a6c; color: #ffffff; text-decoration:none;">
         📊 教師即時繳交儀表板
-      </button>
+      </a>
       <span style="font-size: 0.9rem; color: #b8ccbe;">智慧白板派卷系統</span>
     </div>
   </header>
@@ -440,18 +440,15 @@
 
   </div>
 
-  <!-- 🔒 教師安全防護 PIN 密碼鎖 Modal -->
-  <div id="pinModalOverlay" class="pin-modal-overlay hidden">
+  <!-- 🔒 頁面強制安全門禁 PIN 密碼鎖 Modal (預設 8088，阻擋未授權進入) -->
+  <div id="pinLockModal" class="pin-modal-overlay">
     <div class="pin-modal-card">
       <div class="pin-icon">🔒</div>
-      <h2>教師管理安全門禁</h2>
-      <p>請輸入教師授權 PIN 碼以檢視學生即時繳交進度與成績試算表</p>
-      <input type="password" id="pinInput" placeholder="••••" maxlength="6" autocomplete="off" onkeydown="if(event.key==='Enter')handlePinSubmit()">
-      <div id="pinErrorText" class="pin-error-text"></div>
-      <div style="display:flex; gap:10px;">
-        <button type="button" class="btn-pin-submit" onclick="handlePinSubmit()">解鎖並前往儀表板</button>
-        <button type="button" class="btn-pin-submit" style="background:#33594e;" onclick="closeTeacherPinGate()">取消</button>
-      </div>
+      <h2>生物探索群島 ‧ 教師管理安全門禁</h2>
+      <p>本專區為教師白板派卷與章節總管平台<br>請輸入教師授權 PIN 碼以解除鎖定</p>
+      <input type="password" id="pinInput" placeholder="••••" maxlength="6" autocomplete="off">
+      <div id="pinErrorMsg" class="pin-error-text"></div>
+      <button type="button" id="btnSubmitPin" class="btn-pin-submit">確認解鎖進入大廳</button>
     </div>
   </div>
 
@@ -563,35 +560,71 @@
       });
     }
 
-    // 教師安全鎖邏輯
-    function openTeacherPinGate() {
-      const overlay = document.getElementById('pinModalOverlay');
-      const input = document.getElementById('pinInput');
-      document.getElementById('pinErrorText').textContent = '';
-      input.value = '';
-      overlay.classList.remove('hidden');
-      setTimeout(() => input.focus(), 150);
-    }
+    // ==================== 🔒 教師安全驗證門禁系統 (預設8088，無洩漏) ====================
+    (function initGlobalHallGatekeeper() {
+      const SESSION_AUTH_KEY = 'bio_teacher_auth_passed';
+      const PIN_KEY = 'teacher_global_pin';
+      const DEFAULT_PIN = '8088';
 
-    function closeTeacherPinGate() {
-      document.getElementById('pinModalOverlay').classList.add('hidden');
-    }
-
-    function handlePinSubmit() {
-      const input = document.getElementById('pinInput');
-      const err = document.getElementById('pinErrorText');
-      const pin = input.value.trim();
-      const savedPin = localStorage.getItem('teacher_global_pin') || '8088';
-
-      if (pin === savedPin) {
-        closeTeacherPinGate();
-        window.location.href = 'dashboard.html';
-      } else {
-        err.textContent = '❌ PIN 碼錯誤，請重新輸入！';
-        input.value = '';
-        input.focus();
+      function isAuthed() {
+        return sessionStorage.getItem(SESSION_AUTH_KEY) === 'true';
       }
-    }
+
+      function setAuthed() {
+        sessionStorage.setItem(SESSION_AUTH_KEY, 'true');
+      }
+
+      function setupGatekeeper() {
+        const modal = document.getElementById('pinLockModal');
+        const pinInput = document.getElementById('pinInput');
+        const btnSubmit = document.getElementById('btnSubmitPin');
+        const errMsg = document.getElementById('pinErrorMsg');
+
+        if (!modal) return;
+
+        if (isAuthed()) {
+          modal.classList.add('hidden');
+          document.body.style.overflow = 'auto';
+          return;
+        }
+
+        // 未驗證：強制彈窗鎖定大廳首頁
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        if (pinInput) setTimeout(() => pinInput.focus(), 200);
+
+        function verifyPin() {
+          const entered = (pinInput ? pinInput.value.trim() : '');
+          const validPin = localStorage.getItem(PIN_KEY) || DEFAULT_PIN;
+          if (entered === validPin) {
+            setAuthed();
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            if (pinInput) pinInput.value = '';
+            if (errMsg) errMsg.textContent = '';
+          } else {
+            if (errMsg) errMsg.textContent = '❌ 密碼不正確，請重新輸入！';
+            if (pinInput) {
+              pinInput.value = '';
+              pinInput.focus();
+            }
+          }
+        }
+
+        if (btnSubmit) btnSubmit.onclick = verifyPin;
+        if (pinInput) {
+          pinInput.onkeydown = (e) => {
+            if (e.key === 'Enter') verifyPin();
+          };
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupGatekeeper);
+      } else {
+        setupGatekeeper();
+      }
+    })();
 
     window.addEventListener('DOMContentLoaded', () => {
       handleSelectChange();
