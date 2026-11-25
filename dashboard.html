@@ -604,34 +604,44 @@
     let studentsData = {}; // 以座號為 key 的成績暫存
     const GAS_SCORE_URL = 'https://script.google.com/macros/s/AKfycbxr76Ryb3WxFnZZM2cWA6nTAiaKC2_UpJ63wzyYjhWXLDnf_Yh4Zpxa-W8lB5ZBazBX/exec';
 
-    // 0. 雲端試算表即時連動獲取最新成績
-    async function fetchCloudScores() {
-      try {
-        const cls = document.getElementById('selectClass').value;
-        const res = await fetch(`${GAS_SCORE_URL}?action=dashboard&t=${Date.now()}`);
-        if (!res.ok) return;
-        const json = await res.json();
-        if (json && json.ok && Array.isArray(json.students)) {
-          let updatedAny = false;
-          json.students.forEach(st => {
-            if (st.className === cls) {
-              studentsData[st.seat] = {
-                name: st.name,
-                is1: Boolean(st.is1),
-                is2: Boolean(st.is2),
-                is3: Boolean(st.is3),
-                is4: Boolean(st.is4),
-                is5: Boolean(st.is5)
-              };
-              updatedAny = true;
-            }
-          });
-          renderGrid();
-          updateStats();
+    // 0. 雲端試算表即時連動獲取最新成績 (支援 JSONP 與 POST 雙軌防快取)
+    function fetchCloudScores() {
+      const cls = document.getElementById('selectClass').value;
+      const callbackName = 'cb_bio_' + Date.now();
+      
+      window[callbackName] = function(json) {
+        try {
+          if (json && json.ok && Array.isArray(json.students)) {
+            json.students.forEach(st => {
+              if (st.className === cls) {
+                studentsData[st.seat] = {
+                  name: st.name,
+                  is1: Boolean(st.is1),
+                  is2: Boolean(st.is2),
+                  is3: Boolean(st.is3),
+                  is4: Boolean(st.is4),
+                  is5: Boolean(st.is5)
+                };
+              }
+            });
+            renderGrid();
+            updateStats();
+          }
+        } finally {
+          delete window[callbackName];
+          const sc = document.getElementById(callbackName);
+          if (sc) sc.remove();
         }
-      } catch (err) {
-        console.warn('雲端成績同步中...', err);
-      }
+      };
+
+      const script = document.createElement('script');
+      script.id = callbackName;
+      script.src = `${GAS_SCORE_URL}?action=dashboard&callback=${callbackName}&t=${Date.now()}`;
+      script.onerror = function() {
+        delete window[callbackName];
+        script.remove();
+      };
+      document.body.appendChild(script);
     }
 
     // 1. 人數自訂
